@@ -27,7 +27,7 @@ An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains 
 
 ## Set/element operations
 
-The essential set/element operation for a set is membership test. This benchmark compares an `ArraySet[T]` with a `scala.collection.immutable.HashSet[T]` and scala.collection.immutable.SortedSet[T]. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
+The essential set/element operation for a set is membership test. This benchmark compares an `ArraySet[T]` with a `scala.collection.immutable.HashSet[T]` and `scala.collection.immutable.SortedSet[T]`. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
 
 ![Set/Element operations]({{ site.url }}/assets/setelement.png)
 
