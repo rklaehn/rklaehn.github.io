@@ -11,8 +11,8 @@ title: abc - Array based immutable collections
 
 ## Set/element operations
 
-![Set/Element operations]({{ site.url }}/assets/setelement.png)
+![Set/Element operations](setelement.png)
 
 ## Set/set operations
 
-![Set/Set operations]({{ site.url }}/assets/setset.png)
+![Set/Set operations](setset.png)
