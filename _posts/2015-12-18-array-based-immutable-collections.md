@@ -39,4 +39,6 @@ For a successful membership test, the performance is a bit better than that of t
 
 This is where the array-based representation really shines. For all major set/set operations that are supported by scala collections, ArraySet is significantly faster than both HashSet and SortedSet, often by **two orders of magnitude**. Note the log scale on both the x- and the y-axis.
 
+There are multiple lines because each benchmark is done multiple times for varying *overlaps*. See [the benchmark source](https://github.com/rklaehn/abc/blob/4eef7940c80da84b4c212b1e1dc2aff624c34930/jmhBenchmarks/src/main/scala/com/rklaehn/abc/SetSetBench.scala).
+
 ![Set/Set operations]({{ site.url }}/assets/setset.png)
