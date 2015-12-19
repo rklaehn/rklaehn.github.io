@@ -75,7 +75,7 @@ Memory usage of various Set[Int] in bytes
 | 10000|     40040|   543696|     480056|
 |100000|    400040|  5862192|    4800056|
 
-For Int sets, the memory usage of HashSet or SortedSet is *more than ten times* more than an Array[Int] or an ArraySet[Int].
+For Int sets, the memory usage of SortedSet is *about 12 times* more than that of ArraySet. The memory usage of HashSet is *about 14 times* higher than for ArraySet.
 
 ## ArrayMap
 
@@ -90,4 +90,4 @@ Memory usage of various Map[Int, Int] in bytes
 | 10000| 80064| 943648| 878048|
 | 100000| 800064| 9863680| 8798048|
 
-For Int to Int maps, the memory usage of HashMap or SortedMap is *more than ten times* more than an Array[Int] or an ArraySet[Int].
+For Int sets, the memory usage of SortedSet is *about 11 times* more than that of ArraySet. The memory usage of HashSet is *about 12 times* higher than for ArraySet.
