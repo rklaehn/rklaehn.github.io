@@ -1,17 +1,21 @@
 ---
 layout: post
-title: [abc](https://github.com/rklaehn/abc) - Array based immutable collections
+title: Array based immutable collections
 ---
 
-Wrap arrays as fast, immutable collections
+[abc](https://github.com/rklaehn/abc) - Wrap arrays as fast, immutable collections
 
 -----
+
+# Motivation
 
 Primitive arrays are fast and compact in memory. But they are mutable, have a lot of quirks, and do not even have a working equals and hashCode. So they are rarely used as data structures in scala.
 
 This library wraps primitive arrays as **immutable** sequences, sets and maps. Now at first, the idea of having an immutable data structure backed by a single flat array without any sort of tree structure might seem *ridiculous*. Updating a single element is going to require copying the entire array and is thus going to be an O(n) operation.
 
 But take a look at the typical usage patterns for immutable collections. Often, you transform the entire collection repeatedly with a sequence of map, flatmap and filter operations. So optimizing for single element updates at the expense of things like compact in-memory representation might not be worth it.
+
+Now obviously *building* a collection by starting with an empty immutable collection and then adding all elements one-by-one would be an O(n<sup>2</sup>) operation and thus totally unacceptable. But *intentionally* doing this is also very rare in my experience. Usually you have some sort of sequence or iterable which you want to convert into a collection. That can always be done in at most O(n log n) using [the sonic reducer](https://github.com/rklaehn/sonicreducer). But I might get to that later.
 
 # Benchmarks
 
