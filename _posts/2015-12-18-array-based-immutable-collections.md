@@ -47,6 +47,21 @@ There are multiple lines because each benchmark is done multiple times for varyi
 
 Memory usage is measured using [jamm](https://github.com/jbellis/jamm). See [build.sbt](https://github.com/rklaehn/abc/blob/c9cb4f8ca8af6daa504869c5bfbe7d693032fa71/build.sbt#L127) for how it is used.
 
+## ArraySeq
+
+Memory usage of various Seq[Int] in bytes
+
+|n|ArraySeq|Vector|List|
+|--:|--:|--:|--:|
+| 1| 48| 216| 56|
+| 10| 80| 360| 416|
+| 100| 440| 2376| 4016|
+| 1000| 4040| 20808| 40016|
+| 10000| 40040| 206712| 400016|
+| 100000| 400040| 2064888| 4000016|
+
+For List[Int], memory usage is almost exactly 10 times as large as for an Array[Int] or ArraySeq[Int]. For Vector[Int], memory usage is only about 5 times as high as Array[Int].
+
 ## ArraySet
 
 Memory usage of various Set[Int] in bytes
