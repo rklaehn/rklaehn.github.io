@@ -23,7 +23,7 @@ Benchmarks are done using [JMH](http://openjdk.java.net/projects/code-tools/jmh/
 
 # ArraySet
 
-An ArraySet[A] is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
+An ArraySet[A] is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an ArraySet[A] is most closely comparable with a SortedSet[A] from the scala collections library. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
 
 ## Set/element operations
 
