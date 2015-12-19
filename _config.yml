@@ -30,3 +30,14 @@ github:
   repo:              https://github.com/rklaehn/rklaehn.github.io
 
 
+# Github repositories
+github_user: rklaehn
+github_repo_count: 5
+github_show_profile_link: false
+github_skip_forks: true
+
+# Twitter
+twitter_user: klaehnr
+twitter_tweet_button: true
+
+
