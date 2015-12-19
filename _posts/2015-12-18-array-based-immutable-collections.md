@@ -43,14 +43,13 @@ There are multiple lines because each benchmark is done multiple times for varyi
 
 ![Set/Set operations]({{ site.url }}/assets/setset.png)
 
-
 # Memory usage
 
 Memory usage is measured using [jamm](https://github.com/jbellis/jamm). See [build.sbt](https://github.com/rklaehn/abc/blob/c9cb4f8ca8af6daa504869c5bfbe7d693032fa71/build.sbt#L127) for how it is used.
 
 ## ArraySet
 
-For Int sets, the memory usage of HashSet or SortedSet is *more than ten times* more than an Array[Int] or an ArraySet[Int].
+Memory usage of various Set[Int] in bytes
 
 |    n | ArraySet | HashSet | SortedSet |
 |-----:|---------:|--------:|----------:|
@@ -61,9 +60,11 @@ For Int sets, the memory usage of HashSet or SortedSet is *more than ten times* 
 | 10000|     40040|   543696|     480056|
 |100000|    400040|  5862192|    4800056|
 
+For Int sets, the memory usage of HashSet or SortedSet is *more than ten times* more than an Array[Int] or an ArraySet[Int].
+
 ## ArrayMap
 
-For Int to Int maps, the memory usage of HashMap or SortedMap is *more than ten times* more than an Array[Int] or an ArraySet[Int].
+Memory usage of various Map[Int, Int] in bytes
 
 |n|ArrayMap|HashMap|SortedMap|
 |--:|--:|--:|--:|
@@ -73,3 +74,5 @@ For Int to Int maps, the memory usage of HashMap or SortedMap is *more than ten 
 | 1000| 8064| 95696| 86048|
 | 10000| 80064| 943648| 878048|
 | 100000| 800064| 9863680| 8798048|
+
+For Int to Int maps, the memory usage of HashMap or SortedMap is *more than ten times* more than an Array[Int] or an ArraySet[Int].
