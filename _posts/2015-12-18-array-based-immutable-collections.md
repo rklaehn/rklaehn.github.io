@@ -29,7 +29,7 @@ The benchmarks compare creation, membership test, and bulk operations for `Array
 
 The best approach to build ArraySets is to use the constructor that takes a sequence of elements. This is referred to as "create bulk" in the benchmarks. The naive approach of building an ArraySet is to add elements one by one. This is referred to as "create elements" in the benchmarks. In the scala collections, bulk creation is internally done by adding elements sequentially, so there is no difference between the two approaches.
 
-![Building ArraySets]({{ site.url }}/assets/setcreate.png)
+![Building ArraySets]({{ site.url }}/assets/setcreate.svg)
 
 As you can see from this benchmark, bulk creation of ArraySet[Int] is consistently *much* faster than building HashSet[Int] or SortedSet[Int]. The naive approach of adding elements sequentially unsurprisingly gets much slower for high n, since it is an O(n<sup>2</sup>) operation. *So don't do that.*
 
@@ -37,7 +37,7 @@ As you can see from this benchmark, bulk creation of ArraySet[Int] is consistent
 
 The essential set/element operation for a set is membership test. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
 
-![Set/Element operations]({{ site.url }}/assets/setelement.png)
+![Set/Element operations]({{ site.url }}/assets/setelement.svg)
 
 For a successful membership test, the performance is better than that of the SortedSet and sometimes even better than that of the HashSet. The performance difference between all three collections is not as high. The performance for a failed membership test is somewhere in the middle between SortedSet (worst) and HashSet (best). Note that both the x scale and the y scale are logarithmic, so ArraySet is doing **quite** a bit better than SortedSet due to the compact in-memory representation.
 
@@ -47,7 +47,7 @@ This is where the array-based representation really shines. For all major set/se
 
 There are multiple lines because each benchmark is done multiple times for varying *overlaps*. See [the benchmark source](https://github.com/rklaehn/abc/blob/4eef7940c80da84b4c212b1e1dc2aff624c34930/jmhBenchmarks/src/main/scala/com/rklaehn/abc/SetSetBench.scala).
 
-![Set/Set operations]({{ site.url }}/assets/setset.png)
+![Set/Set operations]({{ site.url }}/assets/setset.svg)
 
 # Memory usage
 
