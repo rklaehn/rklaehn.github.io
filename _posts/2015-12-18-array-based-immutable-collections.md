@@ -27,7 +27,7 @@ An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains 
 
 ### Building
 
-The best approach to build ArraySets is to use the constructor that takes a sequence of elements. This is referred to as "create bulk" in the benchmarks. The naive approach of building an ArraySet is to add elements one by one. In the scala collections, bulk creation is internally done by adding elements sequentially, so there is no difference between the two approaches.
+The best approach to build ArraySets is to use the constructor that takes a sequence of elements. This is referred to as "create bulk" in the benchmarks. The naive approach of building an ArraySet is to add elements one by one. This is referred to as "create elements" in the benchmarks. In the scala collections, bulk creation is internally done by adding elements sequentially, so there is no difference between the two approaches.
 
 ![Building ArraySets]({{ site.url }}/assets/setcreate.png)
 
