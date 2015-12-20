@@ -25,6 +25,14 @@ Benchmarks are done using [JMH](http://openjdk.java.net/projects/code-tools/jmh/
 
 An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an `ArraySet[A]` is most closely comparable with a `SortedSet[A]` from the scala collections library. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
 
+### Building
+
+The best approach to build ArraySets is to use the constructor that takes a sequence of elements. This is referred to as "create bulk" in the benchmarks. The naive approach of building an ArraySet is to add elements one by one. In the scala collections, bulk creation is internally done by adding elements sequentially, so there is no difference between the two approaches.
+
+![Building ArraySets]({{ site.url }}/assets/setcreate.png)
+
+As you can see from this benchmark, bulk creation of ArraySet[Int] is consistently *much* faster than building HashSet[Int] or SortedSet[Int]. The naive approach of adding elements sequentially unsurprisingly gets much slower for high n, since it is an O(n<sup>2</sup>) operation. So don't do that.
+
 ### Set/element operations
 
 The essential set/element operation for a set is membership test. This benchmark compares an `ArraySet[T]` with a `scala.collection.immutable.HashSet[T]` and `scala.collection.immutable.SortedSet[T]`. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
