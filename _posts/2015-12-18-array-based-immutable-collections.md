@@ -23,7 +23,7 @@ Benchmarks are done using [JMH](http://openjdk.java.net/projects/code-tools/jmh/
 
 ## ArraySet
 
-An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an `ArraySet[A]` is most closely comparable with a `SortedSet[A]` from the scala collections library. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
+The benchmarks compare creation, membership test, and bulk operations for `ArraySet[T]` with [`scala.collection.immutable.SortedSet[T]`](http://www.scala-lang.org/api/current/index.html#scala.collection.SortedSet) and [`scala.collection.immutable.HashSet[T]`](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.HashSet). An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an `ArraySet[A]` is most closely comparable with a `SortedSet[A]`. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
 
 ### Building
 
@@ -31,21 +31,19 @@ The best approach to build ArraySets is to use the constructor that takes a sequ
 
 ![Building ArraySets]({{ site.url }}/assets/setcreate.png)
 
-As you can see from this benchmark, bulk creation of ArraySet[Int] is consistently *much* faster than building HashSet[Int] or SortedSet[Int]. The naive approach of adding elements sequentially unsurprisingly gets much slower for high n, since it is an O(n<sup>2</sup>) operation. So don't do that.
+As you can see from this benchmark, bulk creation of ArraySet[Int] is consistently *much* faster than building HashSet[Int] or SortedSet[Int]. The naive approach of adding elements sequentially unsurprisingly gets much slower for high n, since it is an O(n<sup>2</sup>) operation. *So don't do that.*
 
 ### Set/element operations
 
-The essential set/element operation for a set is membership test. This benchmark compares an `ArraySet[T]` with a `scala.collection.immutable.HashSet[T]` and `scala.collection.immutable.SortedSet[T]`. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
+The essential set/element operation for a set is membership test. The two cases are for if the element is contained in the set, and if it is not contained in the set (outside).
 
 ![Set/Element operations]({{ site.url }}/assets/setelement.png)
 
-As you can see, the performance for a failed membership test is somewhere in the middle between SortedSet (worst) and HashSet (best). Note that both the x scale and the y scale are logarithmic, so ArraySet is doing **quite** a bit better than SortedSet due to the compact in-memory representation.
-
-For a successful membership test, the performance is a bit better than that of the SortedSet, and the performance difference between all three collections is not as high.
+For a successful membership test, the performance is better than that of the SortedSet and sometimes even better than that of the HashSet. The performance difference between all three collections is not as high. The performance for a failed membership test is somewhere in the middle between SortedSet (worst) and HashSet (best). Note that both the x scale and the y scale are logarithmic, so ArraySet is doing **quite** a bit better than SortedSet due to the compact in-memory representation.
 
 ### Set/set operations
 
-This is where the array-based representation really shines. For all major set/set operations that are supported by scala collections, ArraySet is significantly faster than both HashSet and SortedSet, often by **two orders of magnitude**. Note the log scale on both the x- and the y-axis.
+This is where the array-based representation really shines. For all major set/set operations that are supported by scala collections, ArraySet is *significantly* faster than both HashSet and SortedSet, often by **two orders of magnitude**. Note the log scale on both the x- and the y-axis.
 
 There are multiple lines because each benchmark is done multiple times for varying *overlaps*. See [the benchmark source](https://github.com/rklaehn/abc/blob/4eef7940c80da84b4c212b1e1dc2aff624c34930/jmhBenchmarks/src/main/scala/com/rklaehn/abc/SetSetBench.scala).
 
