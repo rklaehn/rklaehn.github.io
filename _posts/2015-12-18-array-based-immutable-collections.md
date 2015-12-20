@@ -23,7 +23,7 @@ Benchmarks are done using [JMH](http://openjdk.java.net/projects/code-tools/jmh/
 
 ## ArraySet
 
-The benchmarks compare creation, membership test, and bulk operations for `ArraySet[T]` with `scala.collection.immutable.SortedSet[T]` and `scala.collection.immutable.HashSet[T]`. An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an `ArraySet[A]` is most closely comparable with a `SortedSet[A]`. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
+The benchmarks compare creation, membership test, and bulk operations for `ArraySet[T]` with [`scala.collection.immutable.SortedSet[T]`](http://www.scala-lang.org/api/current/index.html#scala.collection.SortedSet) and [`scala.collection.immutable.HashSet[T]`](http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.HashSet). An `ArraySet[A]` is just a wrapper around an ordered array. Lookup for contains etc. is done using a binary search and is therefore O(log n). Elements are sorted, so an `ArraySet[A]` is most closely comparable with a `SortedSet[A]`. But it will still perform better than a binary search tree, since the data is in a single continuous section of memory. And of course it will work up to very large collections where a binary tree will run out of memory because of its memory overhead.
 
 ### Building
 
