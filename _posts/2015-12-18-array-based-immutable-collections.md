@@ -9,9 +9,9 @@ title: Array based immutable collections
 
 # Motivation
 
-Primitive arrays are fast and compact in memory. But they are mutable, have a lot of quirks, and do not even have a working equals and hashCode. So they are rarely used as data structures in scala.
+Primitive arrays are fast and compact in memory. But they are mutable, have a lot of quirks, and do not even have a working equals and hashCode. So they are rarely used directly as data structures in scala.
 
-This library wraps primitive arrays as **immutable** sequences, sets and maps. Now at first, the idea of having an immutable data structure backed by a single flat array without any sort of tree structure might seem *ridiculous*. Updating a single element is going to require copying the entire array and is thus going to be an O(n) operation.
+This library wraps flat, primitive arrays as **immutable** sequences, sets and maps. Now at first, the idea of having an immutable data structure backed by a single flat array without any sort of tree structure might seem *ridiculous*. Updating a single element is going to require copying the entire array and is thus going to be an O(n) operation.
 
 But take a look at the typical usage patterns for immutable collections. Often, you transform the entire collection repeatedly with a sequence of map, flatmap and filter operations. So optimizing for single element updates at the expense of things like compact in-memory representation might not be worth it.
 
