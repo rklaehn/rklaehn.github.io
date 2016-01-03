@@ -9,11 +9,11 @@ title: Array based immutable collections
 
 # Motivation
 
-Primitive arrays are fast and compact in memory. But they are mutable, have a lot of quirks, and do not even have a working equals and hashCode. So they are rarely used directly as data structures in scala.
+Primitive arrays are fast and compact in memory. But they are mutable, have a lot of quirks, and do not even have a working equals and hashcode. So they are rarely used directly as data structures in scala.
 
 This library wraps flat, primitive arrays as **immutable** sequences, sets and maps. Now at first, the idea of having an immutable data structure backed by a single flat array without any sort of tree structure might seem **ridiculous**. Updating a single element is going to require copying the entire array and is thus going to be an O(n) operation.
 
-But take a look at the typical usage patterns for immutable collections. Often, you transform the entire collection repeatedly with a sequence of map, flatmap and filter operations. So optimizing for single element updates at the expense of things like compact in-memory representation might not be worth it. So the approach in this library is not to make single element updates as fast as possible, *but to give you the tools to avoid having to do it in the first place*.
+But take a look at the typical usage patterns for immutable collections. Often, you transform the entire collection repeatedly with a sequence of map, flatmap and filter operations. So optimizing for single element updates at the expense of things like compact in-memory representation might not be worth it. So the approach in this library is not to make single element updates as fast as possible, *but to give you the tools to avoid having to do them in the first place*.
 
 Now obviously *building* a collection by starting with an empty immutable collection and then adding all elements one-by-one would be an O(n<sup>2</sup>) operation and thus totally unacceptable. See benchmark results below. But *intentionally* doing this is also very rare in my experience. Usually you have some sort of sequence or iterable which you want to convert into a collection. That can always be done in at most O(n log n) using [the sonic reducer](https://github.com/rklaehn/sonicreducer). But I might get to that later.
 
@@ -43,7 +43,7 @@ For a successful membership test, the performance is better than that of the Sor
 
 ### Set/set operations
 
-For all major set/set operations that are supported by scala collections, ArraySet is faster by SortedSet, often by **two orders of magnitude**. It is also significantly faster than HashSet for large n. Note the log scale on both the x- and the y-axis.
+For all major set/set operations that are supported by scala collections, ArraySet is faster than SortedSet, often by **two orders of magnitude**. It is also significantly faster than HashSet for large n. Note the log scale on both the x- and the y-axis.
 
 There are multiple lines because each benchmark is done multiple times for varying *overlaps*. See [the benchmark source](https://github.com/rklaehn/abc/blob/4eef7940c80da84b4c212b1e1dc2aff624c34930/jmhBenchmarks/src/main/scala/com/rklaehn/abc/SetSetBench.scala).
 
