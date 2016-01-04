@@ -15,7 +15,7 @@ This library wraps flat, primitive arrays as **immutable** sequences, sets and m
 
 But take a look at the typical usage patterns for immutable collections. Often, you transform the entire collection repeatedly with a sequence of map, flatmap and filter operations. So optimizing for single element updates at the expense of things like compact in-memory representation might not be worth it. So the approach in this library is not to make single element updates as fast as possible, *but to give you the tools to avoid having to do them in the first place*.
 
-Now obviously *building* a collection by starting with an empty immutable collection and then adding all elements one-by-one would be an O(n<sup>2</sup>) operation and thus totally unacceptable. See benchmark results below. But *intentionally* doing this is also very rare in my experience. Usually you have some sort of sequence or iterable which you want to convert into a collection. That can always be done in at most O(n log n) using [the sonic reducer](https://github.com/rklaehn/sonicreducer). But I might get to that later.
+Now obviously *building* a collection by starting with an empty immutable collection and then adding all elements one-by-one would be an O(n<sup>2</sup>) operation and thus totally unacceptable. See benchmark results below. But *intentionally* doing this is also very rare in my experience. Usually you have some sort of sequence or iterable which you want to convert into a collection. That can always be done in at most O(n log n) using [the sonic reducer](http://rklaehn.github.io/2016/01/04/sonicreducer/).
 
 # Benchmarks
 
