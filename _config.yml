@@ -40,4 +40,4 @@ github_skip_forks: true
 twitter_user: klaehnr
 twitter_tweet_button: true
 
-
+markdown: redcarpet
