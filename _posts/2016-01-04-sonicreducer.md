@@ -17,7 +17,7 @@ Imagine you had to concatenate a large number of `String`s without using a `Stri
 
 When reducing traversables of indeterminate size, the traversable is converted to a binary tree structure and then immediately reduced without retaining the intermediate tree structure. This is done using a [buffer of 32 elements](https://github.com/rklaehn/sonicreducer/blob/e98fa6facfa55c8d323caa7e448dc651422124cc/src/main/scala/com/rklaehn/sonicreducer/Reducer.scala#L75), which is enough for collections of up to 2<sup>32</sup> elements.
 
-```
+```scala
 (1 to 8).reduceLeft(_ + _)
 (((((((1+2)+3)+4)+5)+6)+7)+8)
 
@@ -29,6 +29,7 @@ Reducer.reduce(1 to 8)(_ + _)
 ```
 
 ASCII art (note that the tree is never actually fully constructed):
+
 ```
               36
              / \
@@ -63,7 +64,7 @@ See the [Benchmarks](src/test/com/rklaehn/sonicreducer/SonicReducerBench.scala) 
 
 Here is an example for summing the rational numbers 1/1 + 1/2 + 1/3 + 1/4 + ...
 
-```
+```scala
 val th = Thyme.warmed(warmth = Thyme.HowWarm.BenchOff, verbose = println)
 val rationals = (1 to 1000).map(i ⇒ Rational(1, i))
 th.pbenchOffWarm("sum 1000 Rationals 1/x")(th.Warm(rationals.reduce(_ + _)))(th.Warm(Reducer.reduce(rationals)(_ + _).get))
@@ -72,6 +73,7 @@ th.pbenchOffWarm("sum 1000 Rationals 1/x")(th.Warm(rationals.reduce(_ + _)))(th.
 As you can see from the results, there is a significant performance benefit in hierarchical reduction. Note that this would also work for a very large stream of rationals.
 
 Results:
+
 ```
 Benchmark comparison (in 5.757 s): sum 1000 Rationals 1/x
 Significantly different (p ~= 0)
