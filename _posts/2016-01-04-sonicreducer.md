@@ -56,7 +56,7 @@ I use this extensively in my [immutable collections library](http://rklaehn.gith
 
 An example would be summing up the rational numbers 1/1 + 1/2 + 1/3 + 1/4 + ... + 1/n. The intermediate results will have very large numerators and denominators, so summing up using reduceLeft will be inefficient. Hierarchical reduction will only produce large numerators and denominators at the top of the tree.
 
-Another example would be summming a number of doubles. Floating point addition is of course not associative, but people like to pretend that it is. Summing floating point numbers sequentially from left to right will let the floating point error accumulate more than hierarchical summing.
+Another example would be summming a number of doubles. Floating point addition is of course [not associative](http://www.walkingrandomly.com/?p=5380), but people like to pretend that it is. Summing floating point numbers sequentially from left to right will let the floating point error accumulate more than hierarchical summing.
 
 # Benchmarks
 
