@@ -3,7 +3,7 @@ layout: post
 title: Efficient binary merge in spire
 ---
 
-[sonicreducer](https://github.com/rklaehn/sonicreducer) - hierarchical reduction of sequences and iterables
+[BinaryMerge](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L17) - Efficient binary merge in spire
 
 -----
 
@@ -19,7 +19,7 @@ So let's consider the case where only the number of comparisons matters, and the
 
 In that case, the seemingly trivial problem of merging two sorted lists turns into a problem that has *10 pages* of [TAOCP](https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming) devoted to it. 
 
-So I did what you usually do in this situation: [ask on stackexchange](http://programmers.stackexchange.com/questions/267406/algorithm-to-merge-two-sorted-arrays-with-minimum-number-of-comparisons). Given that this should be a pretty common problem, I was expecting an answer like "you obviously have to use the Foo-Bar algorithm described by 1969 by XYZ". But to my surprise, the algorithm that was posted as the answer, despite being called [A simple algorithm for merging two disjoint linearly-ordered sets](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.419.8292), is not very simple. It is asymptotically optimal, but too complex to degrade well in the case that the comparison is cheap.
+So I did what you usually do in this situation: [ask on stackexchange](http://programmers.stackexchange.com/questions/267406/algorithm-to-merge-two-sorted-arrays-with-minimum-number-of-comparisons). Given that this should be a pretty common problem, I was expecting an answer like "you obviously have to use the Foo-Bar algorithm described by 1969 by XYZ". But to my surprise, the algorithm that was posted as the answer, despite being called [A simple algorithm for merging two disjoint linearly-ordered sets (F. K. Hwang , S. Lin)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.419.8292), is not very simple. It is asymptotically optimal, but too complex to degrade well in the case that the comparison is cheap.
 
 So I tried to come up with a simpler solution.
 
@@ -35,7 +35,7 @@ b = [5]
 
 The best solution in this case is to do a binary search for the position of the single element of *b* in *a*, then just copy the part of a that is below b(0), b(0), and the part of a that is above b(0). Obviously it would be possible to just special-case this solution. But that would be unelegant and in any case would not help in case 2)
 
-2) Merging a long list and a small list
+2) Merging a long list and a short list
 ```
 a = [1,2,4,5,6,7,9,10]
 b = [3,8]
@@ -85,30 +85,123 @@ Now that know what we have to do for the first comparison, what do we do with it
 
 We have to merge elements `a0 until am` from `a` with all elements `b0 until bm` from `b`. Then we have to copy the single element `a(am)` to the result, and finally merge elements `am + 1 until a1` from `a` with all elements `bm + 1 until b1` from `b`.
 
-And that's it. Here is our code, for the case that there are `a` and `b` do not contain duplicate elements:
+And that's it. Here is our code, for the case that `a` and `b` are disjoint linearly-ordered sets.
 
 ```scala
-  def merge0(a0: Int, a1: Int, b0: Int, b1: Int): Unit = {
-    if (a0 == a1) {
-      // base case 1
-      fromB(b0, b1) 
-    } else if (b0 == b1) {
-      // base case 2
-      fromA(a0, a1)
-    } else {
-      // find position of center element of a in b
-      val am = (a0 + a1) / 2
-      // binary search for element a(am) in b, from b0 until b1
-      val res = binarySearchB(am, b0, b1)
-      // we know that res is negative, since a and b do not have common elements
-      val bm = -res - 1
-      // merge everything below a(am) with everything below the found insertion point into the result
-      merge0(a0, am, b0, bm)
-      // add a(am) to the result
-      fromA(am, am + 1)
-      // everything above a(am) with everything above the found insertion point into the result
-      merge0(am + 1, a1, bm, b1)
-    }
+def merge0(a0: Int, a1: Int, b0: Int, b1: Int): Unit = {
+  if (a0 == a1) {
+    // base case 1
+    fromB(b0, b1) 
+  } else if (b0 == b1) {
+    // base case 2
+    fromA(a0, a1)
+  } else {
+    // find position of center element of a in b
+    val am = (a0 + a1) / 2
+    // binary search for element a(am) in b, from b0 until b1
+    val res = binarySearchB(am, b0, b1)
+    // we know that res is negative, since a and b do not have common elements
+    val bm = -res - 1
+    // merge everything below a(am) with everything below the found insertion point into the result
+    merge0(a0, am, b0, bm)
+    // add a(am) to the result
+    fromA(am, am + 1)
+    // everything above a(am) with everything above the found insertion point into the result
+    merge0(am + 1, a1, bm, b1)
   }
+}
 ```
 
+Note that while this method is using recursion, it is not referentially transparent. The result sequence is built in the methods fromA and fromB using a mutable builder for efficiency.
+
+Also note that the [version in spire](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L61) is slightly more complex, because it also works for the case where there are common elements in `a` and `b`, and because it is sometimes an advantage to have the insertion point.
+
+# Behavior for the cases described above
+
+1) Merging long list with single element list
+
+It might seem that the algorithm is not symmetric. But at least for the case of merging a large list with a single element list, the algorithm degrades to a binary search in both cases.
+
+2) Merging a long list and a small list
+
+The algorithm will use the information from the comparison of both middle elements to avoid unnecessary comparisons
+
+3) Merging two long non-overlapping lists
+
+The algorithm will figure out in O(log n) in the first recursion step that the lists are disjoint, and then just copy them
+
+4) Merging interleaved lists
+
+This is tricky, but tests with counting comparisons have indicated that the maximum number of comparisons is never much more than `m + n - 1`.
+
+# Benchmarks
+
+3) Merging two long non-overlapping lists
+
+A simple benchmark was done to compare the linear merge with the binary merge in the case where two long, non-overlapping sequences are compared. This was a case that was very important for my original use case. The benchmark was done using both small rational numbers (as an example with a reasonably expensive comparison) and integers (as an example with a very cheap comparison).
+
+```scala
+val ar = (0 until 1000).map(Rational.apply).toArray
+val br = (1000 until 1001).map(Rational.apply).toArray
+th.pbenchOffWarm("binary merge vs. linear merge (Rational)")(th.Warm(LinearMerge.merge(ar,br)))(th.Warm(BinaryMerge.merge(ar,br)))
+
+val ai = (0 until 1000).toArray
+val bi = (1000 until 1001).toArray
+th.pbenchOffWarm("binary merge vs. linear merge (Int)")(th.Warm(LinearMerge.merge(ai,bi)))(th.Warm(BinaryMerge.merge(ai,bi)))
+```
+
+Here are the results.
+
+```
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    0.03200   95% CI 0.03140 - 0.03259   (n=20)
+[info]     First     25.76 us   95% CI 25.32 us - 26.19 us
+[info]     Second    824.1 ns   95% CI 817.4 ns - 830.8 ns
+[info] Benchmark comparison (in 4.780 s): binary merge vs. linear merge (Int)
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    0.17180   95% CI 0.17020 - 0.17341   (n=20)
+[info]     First     4.070 us   95% CI 4.039 us - 4.100 us
+[info]     Second    699.2 ns   95% CI 695.3 ns - 703.0 ns
+```
+
+As expected, the performance difference for the rational case is pretty large, despite this being *small* rational numbers. For rational numbers with complex fractions, the difference would be even larger. 
+
+But even for the integer case, there is a performance difference of a factor of 5. The reason is that copying a large number of elements using a few calls to System.arraycopy is *extremely* fast compared to copying them one by one, and of course that even integer comparisons are expensive compared to a simple copy.
+
+4) Merging interleaved lists
+
+Now let's look at the results for the absolute worst case, where the two sequences are completely overlapping and exactly interleaved.
+
+```
+val ar = (0 until 2000 by 2).map(Rational.apply).toArray
+val br = (1 until 2001 by 2).map(Rational.apply).toArray
+th.pbenchOffWarm("binary merge vs. linear merge (Rational)")(th.Warm(LinearMerge.merge(ar,br)))(th.Warm(BinaryMerge.merge(ar,br)))
+
+val ai = (0 until 2000 by 2).toArray
+val bi = (1 until 2001 by 2).toArray
+th.pbenchOffWarm("binary merge vs. linear merge (Int)")(th.Warm(LinearMerge.merge(ai,bi)))(th.Warm(BinaryMerge.merge(ai,bi)))
+```
+
+Here are the results.
+
+```
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    1.52149   95% CI 1.49551 - 1.54748   (n=20)
+[info]     First     52.99 us   95% CI 52.23 us - 53.74 us
+[info]     Second    80.62 us   95% CI 79.86 us - 81.38 us
+[info] Benchmark comparison (in 3.930 s): binary merge vs. linear merge (Int)
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    5.42174   95% CI 5.34107 - 5.50242   (n=20)
+[info]     First     9.458 us   95% CI 9.379 us - 9.537 us
+[info]     Second    51.28 us   95% CI 50.65 us - 51.91 us
+```
+
+In the case of rational numbers, the binary merge is a bit slower than the linear merge. But not by a significant factor. In the case of integers, where the cost of a comparison is almost too cheap to measure, the linear merge is superior by a factor of 5 or so. But this is to be expected, simply due to the fact that calls to System.arraycopy to copy a single element will be more expensive than just copying an integer. And again, this represents the exact opposite of what the binary merge is made for.
+
+# Questions
+
+- Does anybody know the name of this algorithm? If yes, I really would like to know it. If not, I call dibs.
+
+I find this tremendously useful and use it in several of my open source libraries such as [abc](https://github.com/rklaehn/abc) and [intervalset](https://github.com/rklaehn/intervalset), as well as in proprietary libraries for my current employer.
+
+- I am pretty convinced that this algorithm is asymptotically optimal, just like Hwang-Lin. But I don't really know how to prove this. Anybody have any hints how to approach something like this?
