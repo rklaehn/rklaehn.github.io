@@ -19,7 +19,7 @@ So let's consider the case where only the number of comparisons matters, and the
 
 In that case, the seemingly trivial problem of merging two sorted lists turns into a problem that has *10 pages of [TAOCP](https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming)* devoted to it (Volume 3, Pages 197-207, **Minimum-Comparison Merging**)
 
-So I did what you usually do in this situation: [ask on stackexchange](http://programmers.stackexchange.com/questions/267406/algorithm-to-merge-two-sorted-arrays-with-minimum-number-of-comparisons). Given that this should be a pretty common problem, I was expecting an answer like "you obviously have to use the Foo-Bar algorithm described by 1969 by XYZ". But to my surprise, the algorithm that was posted as the answer, despite being called [A simple algorithm for merging two disjoint linearly-ordered sets (F. K. Hwang , S. Lin)](http://dx.doi.org/10.1137/0201004), is not very simple. It is asymptotically optimal, but too complex to degrade well in the case that the comparison is relatively cheap. 
+So I did what you usually do in this situation: [ask on stackexchange](http://programmers.stackexchange.com/questions/267406/algorithm-to-merge-two-sorted-arrays-with-minimum-number-of-comparisons). Given that this should be a pretty common problem, I was expecting an answer like "you obviously have to use the Foo-Bar algorithm described by 1969 by XYZ". But to my surprise, the algorithm that was posted as the answer, despite being called [A simple algorithm for merging two disjoint linearly-ordered sets (F. K. Hwang , S. Lin)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.419.8292), is not very simple. It is asymptotically optimal, but too complex to degrade well in the case that the comparison is relatively cheap. 
 
 Also, it is pretty complex to implement. For example, it is using ***floating point operations*** to calculate indices.
 
@@ -228,3 +228,5 @@ In the case of rational numbers, the binary merge is a bit slower than the linea
 - Does anybody know the name of this algorithm? I think that it is a big improvement over the Hwang-Lin algorithm. So if you know the name, I *really* would like to know it. If not, I call dibs. I find this tremendously useful and use it in several of my open source libraries such as [abc](https://github.com/rklaehn/abc) and [intervalset](https://github.com/rklaehn/intervalset), as well as in proprietary libraries for my current employer.
 
 - I am pretty convinced that this algorithm is asymptotically optimal, just like Hwang-Lin. But I don't really know how to prove this. Anybody have any hints how to approach something like this?
+
+- Does anybody know an implementation of the Hwang-Lin merge algorithm in java? I would like to do comparative benchmarks.
