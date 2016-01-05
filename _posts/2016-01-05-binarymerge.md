@@ -36,7 +36,13 @@ a = [1,2,3,4,6,7,8,9,10]
 b = [5]
 ```
 
-The best solution in this case is to do a binary search for the insertion point of the single element of `b` in `a`, then just copy the part of a that is below `b(0)`, `b(0)`, and the part of a that is above `b(0)`. Obviously it would be possible to just special-case this solution. But that would be unelegant and in any case would not help in case b)
+The best solution in this case is to do a binary search for the insertion point of the single element of `b` in `a`, then just copy 
+
+- the part of `a` that is below `b(0)`
+- the element `b(0)`
+- the part of `a` that is above `b(0)`
+
+Obviously it would be possible to just special-case this solution. But that would be unelegant and in any case would not help in case b)
 
 b) Merging a long sequence and a short sequence
 
@@ -54,7 +60,7 @@ a = [1,2,3,4,5]
 b = [6,7,8,9,10]
 ```
 
-This is a case where you can expect huge performance gains, because you just have to copy one list after the other. You could detect this case by comparing the first element of one sequence with the last element of the other sequence and vice versa. But the cost of that comparison will be overhead in other cases.
+This is a case where you can expect huge performance gains, because you just have to copy one list after the other. You could detect this case by comparing the first element of one sequence with the last element of the other sequence and vice versa. But the cost of that comparison will be overhead in other cases, so you can only justify this if you know that this case is very common (which we don't).
 
 d) Merging two completely interleaved sequences
 
