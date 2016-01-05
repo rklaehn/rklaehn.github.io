@@ -139,6 +139,8 @@ Note that while this method is using recursion, it is not referentially transpar
 
 Also note that the [version in spire](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L61) is slightly more complex, because it also works for the case where there are common elements in `a` and `b`, and because it is sometimes an advantage to have the insertion point.
 
+Here is an [example](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L101) how the merging strategy is used to merge two sorted `Array[T]` given an `Order[T]`.
+
 # Behavior for the cases described above
 
 a) Merging long list with single element list
