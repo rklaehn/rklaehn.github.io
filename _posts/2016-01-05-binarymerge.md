@@ -31,7 +31,7 @@ There are several cases that have to be considered when merging two sorted seque
 
 a) Merging long sequence with single element sequence
 
-```
+```js
 a = [1,2,3,4,6,7,8,9,10]
 b = [5]
 ```
@@ -46,7 +46,7 @@ Obviously it would be possible to just special-case this solution. But that woul
 
 b) Merging a long sequence and a short sequence
 
-```
+```js
 a = [1,2,4,5,6,7,9,10]
 b = [3,8]
 ```
@@ -55,7 +55,7 @@ In this case you might be tempted to just insert all elements of the smaller lis
 
 c) Merging two large sequences which are non-overlapping
 
-```
+```js
 a = [1,2,3,4,5]
 b = [6,7,8,9,10]
 ```
@@ -64,7 +64,7 @@ This is a case where you can expect huge performance gains, because you just hav
 
 d) Merging two completely interleaved sequences
 
-```
+```js
 a = [1,3,5,7,9]
 b = [2,4,6,8,10]
 ```
