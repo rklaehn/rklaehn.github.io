@@ -81,7 +81,7 @@ Let's use `a0` and `a1` for the first (inclusive) and last (exclusive) index of 
 
 ## The base cases
 
-Before we start thinking about complex things, let's consider the base case(s). Merging a section of a sequence with an *empty* section of another sequence means just copying over all elements of interest from that sequence to the target sequence. So if `a0` is `a1`, just copy everything from `b0` to `b1` to the result, and vice versa.
+Before we start thinking about complex things, let's consider the base case(s). Merging a section of a sequence with an *empty* section of another sequence means just copying over all elements of interest from that sequence to the target sequence. So if `a0` is `a1`, just copy everything from `b0` until `b1` to the result, and vice versa.
 
 ## The first comparison
 
