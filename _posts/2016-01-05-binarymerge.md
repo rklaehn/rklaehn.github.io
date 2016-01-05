@@ -204,6 +204,6 @@ In the case of rational numbers, the binary merge is a bit slower than the linea
 
 - Does anybody know the name of this algorithm? I think that it is a big improvement over the Hwang-Lin algorithm. So if you know the name, I *really* would like to know it. If not, I call dibs.
 
-I find this tremendously useful and use it in several of my open source libraries such as [abc](https://github.com/rklaehn/abc) and [intervalset](https://github.com/rklaehn/intervalset), as well as in proprietary libraries for my current employer.
+  I find this tremendously useful and use it in several of my open source libraries such as [abc](https://github.com/rklaehn/abc) and [intervalset](https://github.com/rklaehn/intervalset), as well as in proprietary libraries for my current employer.
 
 - I am pretty convinced that this algorithm is asymptotically optimal, just like Hwang-Lin. But I don't really know how to prove this. Anybody have any hints how to approach something like this?
