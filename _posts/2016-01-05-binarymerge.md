@@ -178,15 +178,16 @@ th.pbenchOffWarm("binary merge vs. linear merge (Int)")(th.Warm(LinearMerge.merg
 Here are the results.
 
 ```
+[info] Benchmark comparison (in 4.859 s): linear merge vs. binary merge (Rational)
 [info] Significantly different (p ~= 0)
-[info]   Time ratio:    0.03200   95% CI 0.03140 - 0.03259   (n=20)
-[info]     First     25.76 us   95% CI 25.32 us - 26.19 us
-[info]     Second    824.1 ns   95% CI 817.4 ns - 830.8 ns
-[info] Benchmark comparison (in 4.780 s): binary merge vs. linear merge (Int)
-[info] Significantly different (p ~= 0)
-[info]   Time ratio:    0.17180   95% CI 0.17020 - 0.17341   (n=20)
-[info]     First     4.070 us   95% CI 4.039 us - 4.100 us
-[info]     Second    699.2 ns   95% CI 695.3 ns - 703.0 ns
+[info]   Time ratio:    0.04289   95% CI 0.04228 - 0.04351   (n=20)
+[info]     First     20.01 us   95% CI 19.85 us - 20.17 us
+[info]     Second    858.3 ns   95% CI 848.2 ns - 868.5 ns
+[info] Benchmark comparison (in 3.239 s): linear merge vs. binary merge (Int)
+[info] Significantly different (p ~= 7.076e-05)
+[info]   Time ratio:    1.02244   95% CI 1.01220 - 1.03267   (n=20)
+[info]     First     805.4 ns   95% CI 799.6 ns - 811.2 ns
+[info]     Second    823.5 ns   95% CI 817.7 ns - 829.2 ns
 ```
 
 As expected, the performance difference for the rational case is pretty large, despite this being *small* rational numbers. For rational numbers with complex fractions, the difference would be even larger. 
@@ -211,17 +212,50 @@ Here are the results.
 
 ```
 [info] Significantly different (p ~= 0)
-[info]   Time ratio:    1.52149   95% CI 1.49551 - 1.54748   (n=20)
-[info]     First     52.99 us   95% CI 52.23 us - 53.74 us
-[info]     Second    80.62 us   95% CI 79.86 us - 81.38 us
-[info] Benchmark comparison (in 3.930 s): binary merge vs. linear merge (Int)
+[info]   Time ratio:    2.01071   95% CI 1.97655 - 2.04487   (n=20)
+[info]     First     50.57 us   95% CI 49.96 us - 51.18 us
+[info]     Second    101.7 us   95% CI 100.5 us - 102.9 us
+[info] Benchmark comparison (in 4.595 s): linear merge vs. binary merge (Int)
 [info] Significantly different (p ~= 0)
-[info]   Time ratio:    5.42174   95% CI 5.34107 - 5.50242   (n=20)
-[info]     First     9.458 us   95% CI 9.379 us - 9.537 us
-[info]     Second    51.28 us   95% CI 50.65 us - 51.91 us
+[info]   Time ratio:    8.65913   95% CI 8.56595 - 8.75230   (n=20)
+[info]     First     6.016 us   95% CI 5.985 us - 6.047 us
+[info]     Second    52.09 us   95% CI 51.60 us - 52.59 us
 ```
 
 In the case of rational numbers, the binary merge is a bit slower than the linear merge. But not by a significant factor. In the case of integers, where the cost of a comparison is almost too cheap to measure, the linear merge is superior by a factor of 5 or so. But this is to be expected, simply due to the fact that calls to System.arraycopy to copy a single element will be more expensive than just copying an integer. And again, this represents the exact opposite of what the binary merge is made for.
+
+## a) Merging long sequence with single element sequence
+
+This case is important e.g. when adding single elements by means of a merge.
+
+Benchmark
+
+```scala
+val ar = (0 until 2000).filter(_ != 666).map(Rational.apply).toArray
+val br = Seq(666).map(Rational.apply).toArray
+th.pbenchOffWarm("linear merge vs. binary merge (Rational)")(th.Warm(LinearMerge.merge(ar,br)))(th.Warm(BinaryMerge.merge(ar,br)))
+
+val ai = (0 until 2000).filter(_ != 666).toArray
+val bi = Seq(666).toArray
+th.pbenchOffWarm("linear merge vs. binary merge (Int)")(th.Warm(LinearMerge.merge(ai,bi)))(th.Warm(BinaryMerge.merge(ai,bi)))
+```
+
+Result
+
+```
+[info] Benchmark comparison (in 4.918 s): linear merge vs. binary merge (Rational)
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    0.06785   95% CI 0.06733 - 0.06838   (n=20)
+[info]     First     19.07 us   95% CI 18.96 us - 19.18 us
+[info]     Second    1.294 us   95% CI 1.287 us - 1.301 us
+[info] Benchmark comparison (in 4.069 s): linear merge vs. binary merge (Int)
+[info] Significantly different (p ~= 0)
+[info]   Time ratio:    0.73762   95% CI 0.73167 - 0.74357   (n=20)
+[info]     First     1.655 us   95% CI 1.644 us - 1.666 us
+[info]     Second    1.221 us   95% CI 1.216 us - 1.227 us
+```
+
+As expected, the linear merge is much faster in the case of rational (moderately expensive comparison). Perhaps unexpectedly, it is still a bit faster even with integers.
 
 # Questions
 
