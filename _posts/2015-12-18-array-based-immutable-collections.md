@@ -47,6 +47,8 @@ For all major set/set operations that are supported by scala collections, ArrayS
 
 There are multiple lines because each benchmark is done multiple times for varying *overlaps*. See [the benchmark source](https://github.com/rklaehn/abc/blob/4eef7940c80da84b4c212b1e1dc2aff624c34930/jmhBenchmarks/src/main/scala/com/rklaehn/abc/SetSetBench.scala).
 
+Set/set operations are implemented using my [Minimum-Comparison Merging algorithm](http://rklaehn.github.io/2016/01/05/binarymerge/).
+
 ![Set/Set operations]({{ site.url }}/assets/setset.png)
 
 # Memory usage
