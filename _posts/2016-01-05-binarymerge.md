@@ -120,25 +120,25 @@ Also note that the [version in spire](https://github.com/rklaehn/spire/blob/eb70
 
 # Behavior for the cases described above
 
-1) Merging long list with single element list
+a) Merging long list with single element list
 
 It might seem that the algorithm is not symmetric. But at least for the case of merging a large list with a single element list, the algorithm boils down to a binary search in both cases.
 
-2) Merging a long list and a small list
+b) Merging a long list and a small list
 
 The algorithm will use the information from the comparison of both middle elements to avoid unnecessary comparisons
 
-3) Merging two long non-overlapping lists
+c) Merging two long non-overlapping lists
 
 The algorithm will figure out in O(log n) in the first recursion step that the lists are disjoint, and then just copy them
 
-4) Merging interleaved lists
+d) Merging interleaved lists
 
 This is tricky, but tests with counting comparisons have indicated that the maximum number of comparisons is never much more than `m + n - 1`.
 
 # Benchmarks
 
-3) Merging two long non-overlapping lists
+## Case c: Merging two long non-overlapping lists
 
 A simple benchmark was done to compare the linear merge with the binary merge in the case where two long, non-overlapping sequences are compared. This was a case that was very important for my original use case. The benchmark was done using both small rational numbers (as an example with a reasonably expensive comparison) and integers (as an example with a very cheap comparison).
 
@@ -170,7 +170,7 @@ As expected, the performance difference for the rational case is pretty large, d
 
 But even for the integer case, there is a performance difference of a factor of 5. The reason is that copying a large number of elements using a few calls to System.arraycopy is *extremely* fast compared to copying them one by one, and of course that even integer comparisons are expensive compared to a simple copy.
 
-4) Merging interleaved lists
+## Case d: Merging interleaved lists
 
 Now let's look at the results for the absolute worst case, where the two sequences are completely overlapping and exactly interleaved.
 
