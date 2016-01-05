@@ -29,16 +29,16 @@ So I tried to come up with a simpler solution.
 
 There are several cases that have to be considered when merging two sorted sequences. Coming up with a good solution for any of these cases is simple. The challenge is to come up with a solution that works well for **all** of the cases and that gracefully degrades in the worst case.
 
-a) Merging long list with single element list
+a) Merging long sequence with single element sequence
 
 ```
 a = [1,2,3,4,6,7,8,9,10]
 b = [5]
 ```
 
-The best solution in this case is to do a binary search for the position of the single element of *b* in *a*, then just copy the part of a that is below b(0), b(0), and the part of a that is above b(0). Obviously it would be possible to just special-case this solution. But that would be unelegant and in any case would not help in case b)
+The best solution in this case is to do a binary search for the insertion point of the single element of `b` in `a`, then just copy the part of a that is below `b(0)`, `b(0)`, and the part of a that is above `b(0)`. Obviously it would be possible to just special-case this solution. But that would be unelegant and in any case would not help in case b)
 
-b) Merging a long list and a short list
+b) Merging a long sequence and a short sequence
 
 ```
 a = [1,2,4,5,6,7,9,10]
@@ -47,16 +47,16 @@ b = [3,8]
 
 In this case you might be tempted to just insert all elements of the smaller list into the larger list, doing binary searches for each insert. But that would be less than optimal. From the insertion position of the first element, we know which elements are definitely smaller than the second element and thus do not have to be compared, so we can restrict the range of the second binary search based on the result of the first.
 
-c) Merging two large lists which are disjoint
+c) Merging two large sequences which are non-overlapping
 
 ```
 a = [1,2,3,4,5]
 b = [6,7,8,9,10]
 ```
 
-This is a case where you can expect huge performance gains, because you just have to copy one list after the other. You could detect this case by comparing the first element of one list with the last element of the other list and vice versa. But the cost of that comparison will be overhead in other cases.
+This is a case where you can expect huge performance gains, because you just have to copy one list after the other. You could detect this case by comparing the first element of one sequence with the last element of the other sequence and vice versa. But the cost of that comparison will be overhead in other cases.
 
-d) Merging two completely interleaved lists
+d) Merging two completely interleaved sequences
 
 ```
 a = [1,3,5,7,9]
@@ -75,26 +75,34 @@ Let's use `a0` and `a1` for the first (inclusive) and last (exclusive) index of 
 
 ## The base cases
 
-Before we start thinking about complex things, let's consider the base case(s). Merging a section of a sequence with an *empty* section of another sequence means just copying over all elements of interest from that sequence to the target sequence.
+Before we start thinking about complex things, let's consider the base case(s). Merging a section of a sequence with an *empty* section of another sequence means just copying over all elements of interest from that sequence to the target sequence. So if `a0` is `a1`, just copy everything from `b0` to `b1` to the result, and vice versa.
 
 ## The first comparison
 
 It is clear that we have to gain the maximum information from each comparison in order to limit the number of comparisons to the minimum. So it seems intuitively obvious that we have to compare the *middle* element of `a` with the *middle* element of `b`. No matter what the result of the comparison is, we have 50% of all elements in `a` that we never again have to compare with 50% of the elements in `b`. We have gained information for a quarter of all possible comparisons with just a single comparison. If you had a table of size m \* n with each cell being a possible comparison, executing the comparison at the *center* of the table allows you to eliminate an entire quadrant of the table.
+
+   | 5 | 6 | 7 | 8 | 9 |
+---|---|---|---|---|---|
+ 1 |   |   | > | > | > |
+ 3 |   |   | > | > | > |
+ 5 |   |   | > | > | > |
+ 7 |   |   |   |   |   |
+ 9 |   |   |   |   |   |
 
 ```
 am = (a0 + a1) / 2
 bm = (b0 + b1) / 2
 ````
 
-`a(am) < b(bm)`, so *all* elements a(i), i from a0 to am are smaller than *all* elements b(j), j from bm until b1.
+`a(am) < b(bm)`, so *all* elements `a(i), a0 ≤ i ≤ am` are smaller than *all* elements `b(j), bm ≤ j < b1`.
 
 ## The recursion step
 
-Now that know what we have to do for the first comparison, what do we do with it? What I came up with is the following: we look for the insertion position of the center element of `a` in `b`, using a binary search. The first comparison done by the binary search will be exactly as described above. Once we have the result `bm`, we can recurse.
+Now that know what we have to do for the first comparison, what do we do with it? What I came up with is the following: we look for the *insertion index* of the center element of `a` in `b`, using a binary search. The first comparison done by the binary search will be exactly as described above. Once we have the result, which we shall call `bm`, we can recurse.
 
 We have to merge elements `a0 until am` from `a` with all elements `b0 until bm` from `b`. Then we have to copy the single element `a(am)` to the result, and finally merge elements `am + 1 until a1` from `a` with all elements `bm + 1 until b1` from `b`.
 
-And that's it. Here is our code, for the case that `a` and `b` are disjoint linearly-ordered sets.
+And that's it. Here is our code, for the case that `a` and `b` are disjoint ordered sets.
 
 ```scala
 def merge0(a0: Int, a1: Int, b0: Int, b1: Int): Unit = {
@@ -121,7 +129,7 @@ def merge0(a0: Int, a1: Int, b0: Int, b1: Int): Unit = {
 }
 ```
 
-Note that while this method is using recursion, it is not referentially transparent. The result sequence is built in the methods fromA and fromB using a mutable builder for efficiency.
+Note that while this method is using recursion, it is not referentially transparent. The result sequence is built in the methods fromA and fromB using a mutable builder for efficiency. Of course, you will typically wrap this algorithm in a referentially transparent way.
 
 Also note that the [version in spire](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L61) is slightly more complex, because it also works for the case where there are common elements in `a` and `b`, and because it is sometimes an advantage to have the insertion point.
 
