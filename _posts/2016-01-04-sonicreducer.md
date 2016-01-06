@@ -9,7 +9,7 @@ title: The sonic reducer
 
 # Problem
 
-This is a tiny library for reducing arrays or traversables in an hierarchical way. This can turn O(n^2) operations into O(n log(n)) operations in some cases.
+This is a tiny library for reducing arrays or traversables in an hierarchical way. This can turn O(n^2) operations into O(n log n) operations in some cases.
 
 Imagine you had to concatenate a large number of `String`s without using a `StringBuilder`. The most straightforward way to do this would be `strings.reduce(_ + _)`. But that is O(n<sup>2</sup>). Using hierarchical reduction, this can be done in O(n log(n)) without too much effort `Reducer.reduce(strings)(_ + _).get`.
 
