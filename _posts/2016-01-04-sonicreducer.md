@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The sonic reducer
+title: The Sonic Reducer
 ---
 
 [sonicreducer](https://github.com/rklaehn/sonicreducer) - hierarchical reduction of sequences and iterables
@@ -85,3 +85,7 @@ Significantly different (p ~= 0)
 # Conclusion
 
 I think even though this is just a few lines of code, it is useful enough to warrant making a library out of it.
+
+# Why the name
+
+https://www.youtube.com/watch?v=mdu3EU6sbng
