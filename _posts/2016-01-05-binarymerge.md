@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Minimum-Comparison Merging in spire
-comments: true
+comments: false
 ---
 
 [BinaryMerge](https://github.com/rklaehn/spire/blob/eb70e8e89f669c1cdb731cacf5398c4f9e0dd3f7/core/shared/src/main/scala/spire/math/Merging.scala#L17) - Efficient binary merge in spire
