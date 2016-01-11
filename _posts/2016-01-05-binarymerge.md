@@ -21,7 +21,7 @@ In that case, the seemingly trivial problem of merging two sorted lists turns in
 
 So I did what you usually do in this situation: [ask on stackexchange](http://programmers.stackexchange.com/questions/267406/algorithm-to-merge-two-sorted-arrays-with-minimum-number-of-comparisons). Given that this should be a pretty common problem, I was expecting an answer like "you obviously have to use the Foo-Bar algorithm described by 1969 by XYZ". But to my surprise, the algorithm that was posted as the answer, despite being called [A simple algorithm for merging two disjoint linearly-ordered sets (F. K. Hwang , S. Lin)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.419.8292), is not very simple. It is asymptotically optimal, but too complex to degrade well in the case that the comparison is relatively cheap. 
 
-Also, it is pretty complex to implement. For example, it is using ***floating point operations*** to calculate indices.
+Also, it is pretty complex to implement. For example, it is using floating point operations to calculate indices.
 
 So I tried to come up with a simpler solution.
 
