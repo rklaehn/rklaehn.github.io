@@ -264,4 +264,4 @@ As expected, the linear merge is much faster in the case of rational (moderately
 
 - I am pretty convinced that this algorithm is asymptotically optimal, just like Hwang-Lin. But I don't really know how to prove this. Anybody have any hints how to approach something like this?
 
-- Does anybody know an implementation of the Hwang-Lin merge algorithm in java? I would like to do comparative benchmarks.
+- Does anybody know an implementation of the Hwang-Lin merge algorithm in java? I would like to do comparative benchmarks!
