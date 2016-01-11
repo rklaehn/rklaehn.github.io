@@ -192,7 +192,7 @@ Here are the results.
 
 As expected, the performance difference for the rational case is pretty large, despite this being *small* rational numbers. For rational numbers with complex fractions, the difference would be even larger. 
 
-But even for the integer case, there is a performance difference of a factor of 5. The reason is that copying a large number of elements using a few calls to System.arraycopy is *extremely* fast compared to copying them one by one, and of course that even integer comparisons are expensive compared to a simple copy.
+In the integer case, there is no meaningful performance difference. This is to be expected, given that comparing two integers is almost as cheap as copying an integer.
 
 ## Case d: Merging interleaved lists
 
@@ -255,7 +255,7 @@ Result
 [info]     Second    1.221 us   95% CI 1.216 us - 1.227 us
 ```
 
-As expected, the linear merge is much faster in the case of rational (moderately expensive comparison). Perhaps unexpectedly, it is still a bit faster even with integers.
+As expected, the linear merge is much faster in the case of rational (moderately expensive comparison). Perhaps unexpectedly, it is still a bit faster even with integers. I guess the reason for that is that using System.arraycopy to copy a number of integers is faster than copying them one by one in a while loop.
 
 # Questions
 
