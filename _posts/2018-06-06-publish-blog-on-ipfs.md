@@ -38,6 +38,7 @@ anything else will do as well, provided that it has
 ssh access.
 
 Here are some instructions on how to set up a server:
+
 - [Installing ipfs](https://flyingzumwalt.gitbooks.io/decentralized-web-primer/content/install-ipfs/)
 - [How to Host Your IPFS Files Online Forever
 ](https://medium.com/@merunasgrincalaitis/how-to-host-your-ipfs-files-online-forever-f0c56b9b5398)
