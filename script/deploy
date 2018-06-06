@@ -10,6 +10,14 @@ sleep 10
 PATH=./go-ipfs/:$PATH
 HASH=`ipfs --api /ip4/127.0.0.1/tcp/5001 add -r -Q _site`
 echo $HASH
+if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
+    NAME='blog.klaehn.org'
+    echo "publishing to $NAME"
+else
+    NAME='blog-dev.klaehn.org'
+    echo "Not on master. Aborting"
+    exit 0
+fi
 HOSTEDZONE='ZK8DPC8HAJZEM'
 NAME='blog.klaehn.org'
 REQUEST='{"HostedZoneId":"'$HOSTEDZONE'","ChangeBatch":{"Comment":"Updating '$NAME' to '$HASH'","Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME'","Type":"TXT","TTL":30,"ResourceRecords":[{"Value":"\"dnslink='$HASH'\""}]}}]}}'
