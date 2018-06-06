@@ -2,10 +2,3 @@
 set -e # halt script on error
 #
 bundle exec jekyll build
-# get ipfs (version must match what you have on your node
-wget -qO- https://dist.ipfs.io/go-ipfs/v0.4.15/go-ipfs_v0.4.15_linux-amd64.tar.gz | tar xz
-# add jekyll output to ipfs
-ssh -N -L 5001:localhost:5001 ubuntu@34.229.86.216 &
-PATH=./go-ipfs/:$PATH
-HASH=`ipfs add -r -Q _site`
-echo $HASH
