@@ -10,3 +10,7 @@ sleep 10
 PATH=./go-ipfs/:$PATH
 HASH=`ipfs --api /ip4/127.0.0.1/tcp/5001 add -r -Q _site`
 echo $HASH
+HOSTEDZONE='ZGM8BAA0CBXMA'
+NAME='blog.klaehn.org'
+REQUEST='{"HostedZoneId":"ZGM8BAA0CBXMA","ChangeBatch":{"Comment":"Updating '$NAME' to '$HASH'","Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME'","Type":"TXT","TTL":30,"ResourceRecords":[{"Value":"\"dnslink='$HASH'\""}]}}]}}'
+echo $REQUEST
