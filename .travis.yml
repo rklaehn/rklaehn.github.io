@@ -7,6 +7,7 @@ addons:
   ssh_known_hosts:
   - 34.229.86.216
 language: ruby
+cache: bundler
 rvm:
 - 2.4.1
 script: "./script/cibuild"
