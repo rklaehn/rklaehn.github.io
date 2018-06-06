@@ -5,6 +5,7 @@ addons:
     - 34.229.86.216
   apt:
     packages:
+      - bundler
       - jekyll
 script:
   jekyll build
