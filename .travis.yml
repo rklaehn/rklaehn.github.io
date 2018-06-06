@@ -3,9 +3,8 @@ sudo: false
 addons:
   ssh_known_hosts:
     - 34.229.86.216
-  apt:
-    packages:
-      - bundler
-      - jekyll
-script:
-  jekyll build
+language: ruby
+rvm:
+  - 2.4.1
+install: gem install jekyll html-proofer
+script: jekyll build && htmlproofer ./_site
