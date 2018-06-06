@@ -184,7 +184,7 @@ Both IPNS lookup and IPNS publishing is slow and
 unreliable for me. YMMV.
 
 So what I am doing instead is updating a dns TXT entry
-with the new IP**F**S hash that was generated when
+with the new IPFS hash that was generated when
 uploading the data.
 
 I realize that this is not fully decentralized, but
@@ -238,7 +238,7 @@ To allow updating the dns entry from travis, you have
 to create a *separate* AWS IAM user with minimal
 privileges. This can be done using [IAM](https://console.aws.amazon.com/iam/home?region=us-east-1#/users).
 Give the user just *Programmatic access*. Assign the
-policy created in the previous step, and *nothing else*.
+policy created in the previous step, and **nothing else**.
 
 You will be prompted to download a .csv file containing
 the access credentials. Store it somewhere safe, since
@@ -357,7 +357,7 @@ rvm:
 - 2.4.1
 script: "./script/cibuild"
 after_success:
-  - openssl aes-256-cbc -K $encrypted_adce58d55fff_key -iv $encrypted_adce58d55fff_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+  - openssl aes-256-cbc -K $encrypted_<...>_key -iv $encrypted_<...>_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
   - eval "$(ssh-agent -s)"
   - chmod 600 /tmp/deploy_rsa
   - ssh-add /tmp/deploy_rsa
@@ -390,7 +390,7 @@ sleep 10
 HASH=`ipfs --api /ip4/127.0.0.1/tcp/5001 add -r -Q _site`
 echo $HASH
 if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
-    NAME='<your-dns-name>'
+    NAME='blog.your.domain'
     echo "publishing to $NAME"
 else
     echo "Not on master. Aborting"
@@ -425,4 +425,5 @@ https://localhost:8080/ipns/blog.klaehn.org
 http://blog.klaehn.org
 
 If you want to host your own blog on ipfs, feel free to use https://github.com/rklaehn/rklaehn.github.io as a starting point.
-Just remove the blog posts. But you might be better off starting with a fresh clone of https://github.com/poole/poole .
+Just remove the blog posts. But you might be better off starting with a fresh clone of https://github.com/poole/poole and just
+copying .travis.yml and the script directory.
