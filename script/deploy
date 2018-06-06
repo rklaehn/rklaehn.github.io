@@ -16,10 +16,9 @@ if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
 else
     NAME='blog-dev.klaehn.org'
     echo "Not on master. Aborting"
-    exit 0
+    # exit 0
 fi
 HOSTEDZONE='ZK8DPC8HAJZEM'
-NAME='blog.klaehn.org'
 REQUEST='{"HostedZoneId":"'$HOSTEDZONE'","ChangeBatch":{"Comment":"Updating '$NAME' to '$HASH'","Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME'","Type":"TXT","TTL":30,"ResourceRecords":[{"Value":"\"dnslink='$HASH'\""}]}}]}}'
 echo $REQUEST
 aws route53 change-resource-record-sets --cli-input-json "$REQUEST"

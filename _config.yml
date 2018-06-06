@@ -6,7 +6,7 @@ permalink:           pretty
 
 # Setup
 title:               Rüdiger's Blog
-tagline:             Mostly about programming
+tagline:             IPFS, algorithms, data structures
 url:                 http://rklaehn.github.io
 paginate:            1
 baseurl:             ""
@@ -41,6 +41,7 @@ twitter_user: klaehnr
 twitter_tweet_button: true
 
 markdown: redcarpet
+highlighter: rouge
 redcarpet:
   extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 
