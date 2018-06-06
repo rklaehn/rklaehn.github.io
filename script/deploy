@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e # halt script on error
+# get ipfs (version must match what you have on your node
+wget -qO- https://dist.ipfs.io/go-ipfs/v0.4.15/go-ipfs_v0.4.15_linux-amd64.tar.gz | tar xz
+# open tunnel to ipfs node
+ssh -N -L 5001:localhost:5001 ubuntu@34.229.86.216 &
+# wait for some time for the tunnel to be established
+sleep 10
+# add jekyll output to ipfs
+PATH=./go-ipfs/:$PATH
+HASH=`ipfs --api /ip4/127.0.0.1/tcp/5001 add -r -Q _site`
+echo $HASH
+if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
+    NAME='blog.klaehn.org'
+    echo "publishing to $NAME"
+else
+    NAME='blog-dev.klaehn.org'
+    echo "Not on master. Aborting"
+    exit 0
+fi
+HOSTEDZONE='ZK8DPC8HAJZEM'
+NAME='blog.klaehn.org'
+REQUEST='{"HostedZoneId":"'$HOSTEDZONE'","ChangeBatch":{"Comment":"Updating '$NAME' to '$HASH'","Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME'","Type":"TXT","TTL":30,"ResourceRecords":[{"Value":"\"dnslink='$HASH'\""}]}}]}}'
+echo $REQUEST
+aws route53 change-resource-record-sets --cli-input-json "$REQUEST"
