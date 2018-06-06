@@ -61,7 +61,7 @@ content via the gateway.
 
 `http://<your gateway ip>/ipfs/<some 4GB warezed movie>`
 
-Not good. So let's prevent that. Just disallow access via `<your gateway ip>/ipfs` or `<your gateway ip>/ipns`.
+Not good. So let's prevent that. One way would be to just disallow access via `<your gateway ip>/ipfs` or `<your gateway ip>/ipns`.
 
 ```
 server {
@@ -77,10 +77,42 @@ server {
 
 # Is it safe now?
 
-Now it is no longer easy for people to access arbitrary content via your gateway. But there is still something they could do.
-It might be a bit far-fetched, but somebody could create his own DNS TXT record and A record pointing to your IP address to
-download arbitrary content. To prevent that as well, you would have to configure name based virtual hosting in nginx to prevent
-arbitrary names to be forwarded to the IPFS gateway.
+Now it is no longer *easy* for people to access arbitrary content via your gateway. But there is still something they could
+do. It might be a bit far-fetched, but somebody could create his own DNS TXT record and A record pointing to your IP address
+to download arbitrary content. To prevent that as well, you would have to configure name based virtual hosting in nginx to
+prevent arbitrary names to be forwarded to the IPFS gateway.
+
+The easiest way is to just return 404 when the site is accessed via its IP address without the Host header.
+
+```
+server {
+  ...
+  location / {
+    return 404;
+  }
+  ...
+}
+```
+
+Then have separate site files for each site you want to serve via the gateway. These have to be created in sites-available and
+symlinked in sites-enabled.
+
+A simple config that just does the forwarding would look like this:
+
+```
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name *.my.domain;
+
+  location / {
+    proxy_pass http://127.0.0.1:8080;
+    proxy_set_header Host            $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+  }
+}
+```
 
 # Summary
 
