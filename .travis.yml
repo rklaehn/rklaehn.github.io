@@ -6,5 +6,4 @@ addons:
 language: ruby
 rvm:
   - 2.4.1
-install: gem install jekyll jekyll-paginate redcarpet html-proofer
 script: ./script/cibuild
