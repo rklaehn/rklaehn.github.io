@@ -1,7 +1,9 @@
 #!/bin/bash
-set -e # halt script on error
-
-bundle exec jekyll build
+#set -e # halt script on error
+#
+#bundle exec jekyll build
 
 wget https://dist.ipfs.io/ipfs-update/v1.5.2/ipfs-update_v1.5.2_linux-amd64.tar.gz
-tar -C tmp -xzf ipfs-update_v1.5.2_linux-amd64.tar.gz
+tar -xzf ipfs-update_v1.5.2_linux-amd64.tar.gz
+ipfs-update/install.sh
+
