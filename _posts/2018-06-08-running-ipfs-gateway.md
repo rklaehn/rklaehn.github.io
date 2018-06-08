@@ -35,7 +35,7 @@ will return hash of the *current* content of this blog. This is automatically up
 
 Protocol labs is currently using the same mechanism for https://ipfs.io . Check `dig -t TXT ipfs.io` or `dig -t TXT _dnslink.dist.ipfs.io` to see how this works under the hood.
 
-# Assigning IP addresses to domains.
+## Assigning IP addresses to domains.
 
 Assigning the IP address of your IPFS gateway to your domain name works exactly as with any other web server. E.g. 
 
