@@ -25,6 +25,8 @@ But on the other hand, it would be nice to expose an IPFS gateway to provide qui
 
 Ipfs allows assigning IPFS hashes (or IPNS names) to DNS entries via TXT records with content `"dnslink=/ipfs/QmRzNhBJd1ppKCNkXe1V7qqTC1yx72aVzMZDrbM8QVUcFj"`. Once you have such a TXT record pointing to a valid hash, you can use it in an ipns url. E.g. http://gateway.ipfs.io/ipns/blog.klaehn.org .
 
+See this excellent [guide](https://ipfs.io/ipfs/QmNZiPk974vDsPmQii3YbrMKfi12KTSNM7XMiYyiea4VYZ/example#/ipfs/QmP8WUPq2braGQ8iZjJ6w9di6mzgoTWyRLayrMRjjDoyGr/websites/README.md) for details.
+
 To see how this works, you can investigate sites published on ipfs via [`dig`](https://linux.die.net/man/1/dig)
 
 ```shell
