@@ -15,7 +15,7 @@ title: Safely running a public IPFS gateway using nginx
 
 If you are working or playing with IPFS, you are probably running an ipfs node somewhere on the internet. IPFS has the nice property that your node will only ever contain data that you have requested or added yourself, so this is a pretty safe thing to do. The bandwidth use of an ipfs node hosting some obscure content is pretty moderate, and you won't suddenly find illegal content in your local cache.
 
-But once you expose the ipfs gateway to the world, this goes out of the window. *Anybody* can request *anything* that is *anywhere* on IPFS via your gateway. Currently this is not such a big deal, since IPFS is still relatively unknown. But even now it is not wise to rely on security by obscurity.
+But once you expose the ipfs gateway to the world, this goes out of the window. *Anybody* can request *anything* that is *anywhere* on IPFS via *your* gateway. Currently this is not such a big deal, since IPFS is still relatively unknown. But even now it is not wise to rely on this. You might end up with a huge bandwidth bill or even some legal trouble.
 
 But on the other hand, it would be nice to expose an IPFS gateway to provide quick and safe access to *your own* content or content you endorse. So how do you do this?
 
@@ -31,7 +31,9 @@ To see how this works, you can investigate sites published on ipfs via [`dig`](h
 dig -t TXT blog.klaehn.org
 ```
 
-will return hash of the *current* content of this blog. Protocol labs is currently using the same mechanism for https://ipfs.io . Check `dig -t TXT ipfs.io` or `dig -t TXT _dnslink.dist.ipfs.io` to see how this works under the hood.
+will return hash of the *current* content of this blog. This is automatically updated by continuous integration whenever I post something new. See [my previous post](http://blog.klaehn.org/2018/06/06/publish-blog-on-ipfs/) on how that works.
+
+Protocol labs is currently using the same mechanism for https://ipfs.io . Check `dig -t TXT ipfs.io` or `dig -t TXT _dnslink.dist.ipfs.io` to see how this works under the hood.
 
 # Assigning IP addresses to domains.
 
@@ -134,11 +136,11 @@ server {
 
 If your server is exposed to the world, you should *definitely* set up a firewall that protects direct API access (5001) and also direct gateway access (8080). You only need to expose port 4001 for the ipfs protocol and port 80 for NGINX (and maybe 443 if you decide to configure https).
 
-The details on how to do this depend on your hosting provider, so I am not going to go into detail about this.
+The details on how to do this depend on your hosting provider, so I am not going to go into detail about this. Here are some [instructions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) how to do it on AWS.
 
 # To do
 
-One thing that is missing is setting up encryption via [letsencrypt](https://letsencrypt.org/). This is probably just some additional work with nginx. I might describe this in a later blog post. 
+One thing that is missing is setting up encryption via [letsencrypt](https://letsencrypt.org/). This is probably just some additional work with nginx, without having to touch the IPFS config. I might describe this in a later blog post. 
 
 # Result
 
@@ -148,3 +150,6 @@ One thing that is missing is setting up encryption via [letsencrypt](https://let
 - create DNS A records to point to your public gateway
 - create DNS TXT records containing dnslink every time you want to update your content
 
+# Disclaimer
+
+I might have missed something. Or there might be a bug in IPFS. So use this at your own risk.
