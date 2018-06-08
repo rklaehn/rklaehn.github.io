@@ -23,7 +23,7 @@ But on the other hand, it would be nice to expose an IPFS gateway to provide qui
 
 ## Assigning hashes to domain names
 
-Ipfs allows assigning IPFS hashes (or IPNS names) to DNS entries via TXT records with content `"dnslink=/ipfs/QmRzNhBJd1ppKCNkXe1V7qqTC1yx72aVzMZDrbM8QVUcFj"`. Once you have such a TXT record pointing to a valid hash, you can use it in an ipns url. E.g. `http://gateway.ipfs.io/ipns/blog.klaehn.org`.
+Ipfs allows assigning IPFS hashes (or IPNS names) to DNS entries via TXT records with content `"dnslink=/ipfs/QmRzNhBJd1ppKCNkXe1V7qqTC1yx72aVzMZDrbM8QVUcFj"`. Once you have such a TXT record pointing to a valid hash, you can use it in an ipns url. E.g. http://gateway.ipfs.io/ipns/blog.klaehn.org .
 
 To see how this works, you can investigate sites published on ipfs via [`dig`](https://linux.die.net/man/1/dig)
 
@@ -31,7 +31,7 @@ To see how this works, you can investigate sites published on ipfs via [`dig`](h
 dig -t TXT blog.klaehn.org
 ```
 
-will return hash of the *current* content of this blog.
+will return hash of the *current* content of this blog. Protocol labs is currently using the same mechanism for https://ipfs.io . Check `dig -t TXT ipfs.io` or `dig -t TXT _dnslink.dist.ipfs.io` to see how this works under the hood.
 
 # Assigning IP addresses to domains.
 
@@ -41,7 +41,7 @@ Assigning the IP address of your IPFS gateway to your domain name works exactly 
 dig blog.klaehn.org
 ```
 
-will return the IP address of my IPFS gateway.
+will return the IP address of my IPFS gateway. `dig ipfs.io` will return the IP address of the IPFS gateway operated by [protocol labs](https://protocol.ai/).
 
 ## Virtual hosting
 
@@ -129,6 +129,12 @@ server {
   }
 }
 ```
+
+# Firewall config
+
+If your server is exposed to the world, you should *definitely* set up a firewall that protects direct API access (5001) and also direct gateway access (8080). You only need to expose port 4001 for the ipfs protocol and port 80 for NGINX (and maybe 443 if you decide to configure https).
+
+The details on how to do this depend on your hosting provider, so I am not going to go into detail about this.
 
 # To do
 
