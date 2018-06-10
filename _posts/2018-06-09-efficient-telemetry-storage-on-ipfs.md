@@ -6,7 +6,7 @@ title: Interplanetary telemetry compression
 -----
 # TL;DR;
 
-You have large quantities of telemetry or other simply structured JSON data. You want to store it on IPFS in a very efficient way. Then this is for you.
+You have large quantities of telemetry or other simply structured JSON data. You want to store it on IPFS in a very space efficient way. Then this is for you.
 
 # History
 
@@ -104,12 +104,11 @@ Array of records (uniform type)
 
 ```javascript
 [
-  { latitude: 1, longitude: 2 },
-  { latitude: 0, longitude: 3 },
-  { latitude: 1, longitude: 2 },
-  { latitude: 0, longitude: 3 },
-  { latitude: 1, longitude: 5 },
-  { latitude: 2, longitude: 2 }
+  { "time": 1523565937887, "value": 0.1 },
+  { "time": 1523565938890, "value": 0.2 },
+  { "time": 1523565939895, "value": 0.15 },
+  { "time": 1523565940896, "value": 0.25 },
+  { "time": 1523565941896, "value": 0.21 }
 ]
 ```
 
@@ -117,8 +116,8 @@ Record of arrays
 
 ```javascript
 {
-  latitude: [1, 0, 1, 0, 1, 2],
-  longitude: [2, 3, 2, 3, 5, 2]
+  time: [1523565937887, 1523565938890, 1523565939895, 1523565940896, 1523565941896],
+  value: [0.1, 0.2, 0.15, 0.25, 0.21]
 }
 ```
 
@@ -382,6 +381,8 @@ The index array `[0,2]` occurs two times and will be deduplicated when storing i
 
 To evaluate the overall efficiency, I generated some data that closely mimics typical telemetry, but has a known amount of noise which gives an optimum compression ratio for comparison. The samples contain a certain amount of unchanging data such as tags to identify the sensor. This is something you frequently see in the wild.
 
+The number of samples is 100000. About one day of data at a sample rate of 1 Hz. Timestamps are stored as numerical unix timestamps.
+
 The results are summarized in this table. All values are in bytes.
 
 |                | size     | size/sample     |
@@ -508,9 +509,13 @@ $ iptm-cli decompress zdpuAw2qxLonhUCukfSsRbhWnKfEJZCKPw2k5UAqHXF39kkuF
 ]
 ```
 
-# Trials
+## When to use
 
-To evaluate the solution, I have used iptm on a number of data sets, both synthetic and real. Any data set that has a large number of relatively simple JSON records is a good candidate for usage with IPTM.
+- timestamps stored as numbers, not as ISO date strings
+- mostly numerical data
+- large number of samples (>= 100000)
+
+If your dataset is mostly string data, IPTM won't be able to do much better than gzip. In fact it might be worse in some cases, since only redundancy in individual columns is eliminated. For such data, you might be better off with just gzip.
 
 ## License
 
