@@ -38,7 +38,7 @@ As an additional complication, we want to be able to write telemetry not just on
 
 As strange as it sounds, the hardware I have to design for at Actyx in 2018 (ARM based edge devices) is actually *slower* than the hardware I had at GSOC in 2010 (Multi core XEON blade servers).
 
-### 2010
+### 2008
 
 <a title="By Dmitry Nosachev [CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Supermicro_SBI-7228R-T2X_blade_server.jpg"><img width="1024" alt="Supermicro SBI-7228R-T2X blade server" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Supermicro_SBI-7228R-T2X_blade_server.jpg/1024px-Supermicro_SBI-7228R-T2X_blade_server.jpg"></a>
 
