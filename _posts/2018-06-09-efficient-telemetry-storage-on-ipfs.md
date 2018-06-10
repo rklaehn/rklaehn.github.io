@@ -1,8 +1,12 @@
-# Efficient telemetry storage on IPFS
+---
+layout: post
+title: Safely running a public IPFS gateway using nginx
+---
 
+-----
 # TL;DR;
 
-You have large quantities of telemetry data. You want to store it on IPFS in a very efficient way. Then this is for you.
+You have large quantities of telemetry or other simply structured JSON data. You want to store it on IPFS in a very efficient way. Then this is for you.
 
 # History
 
@@ -52,7 +56,7 @@ But in all cases the structure of a *single* telemetry measurement is relatively
 
 What makes handling telemetry demanding is the vast quantities of data you have to store and process. A single sensor measuring at a relatively modest rate of one per second will produce 86&nbsp;400 samples per day, 31&nbsp;536&nbsp;000 samples per year. And on a spacecraft you might have 10000 or more different sensors, some of which might be sampled at much higher rates than 1 Hz.
 
-You also can't throw away or summarize any of this data. This is not a [click stream](https://en.wikipedia.org/wiki/Clickstream) where losing a few samples is not a big deal. In case of an anomaly, you want to be able to investiate every single sample at the time at and before the anomaly.
+You also can't throw away or summarize any of this data. This is not a [click stream](https://en.wikipedia.org/wiki/Clickstream) where losing a few samples is not a big deal. In case of an anomaly, you want to be able to investigate every single sample at the time at and before the anomaly.
 
 Sometimes even the *milliseconds* of the *timestamps* of samples at the time before an anomaly can tell you something interesting.
 
@@ -90,7 +94,7 @@ This insight is not revolutionary. In fact, there are several systems that explo
 
   "Clustered ColumnStore Indices"
 
-But none of them work on a raspberry pi, and none of them store in a location-transparent way on IPFS.
+But none of them works on a raspberry pi, and none of them stores in a location-transparent way on IPFS.
 
 ## Simple transpose
 
@@ -199,7 +203,7 @@ So now we have managed to blow up our tiny sample of nested records to a much la
 
 One thing that is immediately obvious is that JSON is not a very efficient storage format for many kinds of data, especially numeric data. E.g. the number 100 can be encoded as a single byte, which is a factor of three improvement. For strings the improvement is not as drastic, but still significant.
 
-An encoding format that binary and schemaless is [CBOR](https://tools.ietf.org/html/rfc7049). It stands for *Concise Binary Object Representation*. The fact that the author of the format is called *Carsten Bormann* is a mere coincidence.
+An encoding format that is binary and schemaless is [CBOR](https://tools.ietf.org/html/rfc7049). It stands for *Concise Binary Object Representation*. The fact that the author of the format is called *Carsten Bormann* is a mere coincidence.
 
 IPFS is [using CBOR](https://github.com/ipld/specs/blob/master/IPLD.md#serialized-data-formats) as serialized format, so whenever you add JSON to ipfs using the ipfs dag API, it is actually stored as more efficient CBOR.
 
@@ -324,7 +328,7 @@ Obviously, both CBOR encoding and compression will be improved for the sequence 
 
 As you can see from the results, CBOR encoding improves storage efficiency a bit. Every value is stored as a long integer. Normal deflate reduces the size to 3.5 bytes per sample, but given how regular the data is this is not very good.
 
-The delta encoding before deflate allows the deflate algorithm to see the regularity, increaing the compression to less than a byte per sample.
+The delta encoding before deflate allows the deflate algorithm to see the regularity, improving the compression to less than a byte per sample.
 
 ### When to choose delta encoding
 
@@ -342,7 +346,7 @@ In some cases (completely random data or very small arrays), compression has no 
 
 As the last step, each compressed index or value array is stored *separately* in IPFS as an [IPLD](https://github.com/ipld/ipld) DAG object.
 
-This has several benefits. In the long term, it is possible to filter fields by name before reconstructing an object from ipfs, which will make certain analytical queries very efficient.
+This has several benefits. In the long term, it is possible to filter fields by name before reconstructing an object from IPFS, which will make certain analytical queries very efficient.
 
 But the most immediate benefit is that IPFS content adressed storage will of course *deduplicate* arrays that occur multiple times. This sometimes happens for value arrays, but *almost always* happens for index arrays.
 
@@ -369,7 +373,7 @@ Taking for example this transformed data:
 }
 ```
 
-The index array `[0,2]` occurs two times and will be deduplcated when storing in ipfs. The benefit of this is not as high as it might seem, since index arrays already compress very well due to delta compression. But there are certain cases where the deduplcation can be very beneficial, and it comes for free anyway with a content-addressed storage system such as IPFS.
+The index array `[0,2]` occurs two times and will be deduplicated when storing in IPFS. The benefit of this is not as high as it might seem, since index arrays already compress very well due to delta compression. But there are certain cases where the deduplication can be very beneficial, and it comes for free anyway with a content-addressed storage system such as IPFS.
 
 ## Overall results
 
@@ -432,7 +436,7 @@ zdpuAw2qxLonhUCukfSsRbhWnKfEJZCKPw2k5UAqHXF39kkuF
 
 ## Decompression
 
-Decompression takes a single argument: the hash of a compressed IPFS dag object. It retrieves the data, decompresses it, applies the columar to row transform, and produces the original JSON.
+Decompression takes a single argument: the hash of a compressed IPFS dag object. It retrieves the data, decompresses it, applies the columnar to row transform, and produces the original JSON.
 
 ## License
 
