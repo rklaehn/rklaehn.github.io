@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Safely running a public IPFS gateway using nginx
+title: Interplanetary telemetry compression
 ---
 
 -----
@@ -14,7 +14,7 @@ You have large quantities of telemetry or other simply structured JSON data. You
 
 I have been working with large quantities of telemetry at my previous job at [Heavens-Above GmbH](https://www.heavens-above.com/main.aspx), working for the [German Space Operations Center](https://www.dlr.de/dlr/en/desktopdefault.aspx/tabid-10368/562_read-479/). I was writing a system to store and make accessible telemetry for several satellite missions.
 
-The most demanding mission in terms of data rate was the columbus module of the international space station.
+The most demanding mission in terms of data rate was the [Columbus module](https://en.wikipedia.org/wiki/Columbus_(ISS_module)) of the [International Space Station](https://en.wikipedia.org/wiki/International_Space_Station).
 
 <a title="By NASA (https://archive.org/details/s127e009781) [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Columbus_module_-_cropped.jpg"><img width="1024" alt="Columbus module - cropped" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Columbus_module_-_cropped.jpg/1024px-Columbus_module_-_cropped.jpg"></a>
 
@@ -128,7 +128,7 @@ But this most basic approach only works if we have exactly the same values in ea
 
 Ideally we should be able to deal with arbitrary json samples.
 
-## Heterogenous types
+## Heterogenous records
 
 So how do we deal with optional fields or, more generically, heterogenous records, like you might see in an [event sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) application?
 
@@ -403,7 +403,7 @@ We get within a factor of 8 of the theoretical optimum, which is decent.
 
 The last two columns are the encoding and compression scheme described above, with and without deduplication due to IPFS. Deduplication in this case does not have a large benefit, since the index sequences that benefit most from deduplication are very regular.
 
-We do get within a factor of **1.5** to the theoretical optimum despite using the relatively simple deflate algorithm.
+We do get within a factor of **1.4** to the theoretical optimum despite using the relatively simple deflate algorithm.
 
 ### Size per sample (all cases)
 
@@ -415,7 +415,7 @@ We do get within a factor of **1.5** to the theoretical optimum despite using th
 
 # Implementation
 
-The described encoding and compression scheme can of course be implemented in any language. The current implementation is in typescript and runs on nodejs.
+The described encoding and compression scheme can of course be implemented in any language. The current implementation is in [typescript](https://www.typescriptlang.org/) and runs on [nodejs](https://nodejs.org/en/).
 
 I am using [lerna](https://lernajs.io/) for having multiple packages in one github repo.
 
@@ -509,7 +509,7 @@ $ iptm-cli decompress zdpuAw2qxLonhUCukfSsRbhWnKfEJZCKPw2k5UAqHXF39kkuF
 
 # Trials
 
-
+To evaluate the solution, I have used iptm on a number of data sets, both synthetic and real. Any data set that has a large number of relatively simple JSON records is a good candidate for usage with IPTM.
 
 ## License
 
