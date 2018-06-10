@@ -28,7 +28,7 @@ A limitation of the solution developed for GSOC was that it was schema-based, so
 
 ## Telemetry at Actyx
 
-At my current employer [Actyx AG](actyx.io), we are also working with vast quantities of machine data, but now we are dealing with telemetry for manufacturing processes. 
+At my current employer [Actyx AG](https://actyx.io/en), we are also working with vast quantities of machine data, but now we are dealing with telemetry for manufacturing processes. 
 
 We are using IPFS as the core infrastructure for all our solutions.
 
@@ -135,6 +135,7 @@ So how do we deal with optional fields or, more generically, heterogenous record
 Here we have an array of records of different types. The `type` field is always present, but `w` and `h` are only present for `rectangle` records whereas `r` is only present for `circle` records.
 
 Array of heterogenous records
+
 ```javascript
 [
   { type: 'circle', r: 10 }
