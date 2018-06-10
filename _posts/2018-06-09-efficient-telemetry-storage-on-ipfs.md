@@ -219,6 +219,8 @@ Now that we have the individual index and value arrays in a nice and compact CBO
 
 Our index arrays always contain just typically small integers, so both CBOR encoding and the subsequent compression can be expected to work well. The same is true for the value arrays.
 
+Since IPFS does content addressing using cryptographically safe hashes, we can use raw deflate without gzip header and CRC-32 checksum. This saves a few bytes, which can be significant for very small arrays.
+
 ### Enum compression
 
 For the type field for a discriminated union, we can expect a very high level of compression. An entire, possibly long, string is used, but what is actually needed is just a small integer indicating which of the small number of possible string values to use.
@@ -415,30 +417,100 @@ We do get within a factor of **1.5** to the theoretical optimum despite using th
 
 The described encoding and compression scheme can of course be implemented in any language. The current implementation is in typescript and runs on nodejs.
 
-The core package is a very small library that performs the transformation of an array of arbitrary json objects
-into the columnar representation and back, and some utilities to encode and compress columns.
+I am using [lerna](https://lernajs.io/) for having multiple packages in one github repo.
 
-The CLI package provides two simple CLI tools to compress and store / retrieve and decompress data. It requires access to an IPFS API, which you of course have if you are running an IPFS node locally.
+The core package is a very small library that performs the transformation of an array of arbitrary json objects into the columnar representation and back, and some utilities to encode and compress columns. It can be found in the [iptm package](https://github.com/rklaehn/iptm/tree/master/packages/iptm/src). It has relatively few fependencies, just for CBOR encoding and compression.
+
+A command line tool can be found in the [iptm-cli package](https://github.com/rklaehn/iptm/tree/master/packages/iptm-cli/src). It has a few more dependencies for interacting with ipfs, and can be installed using `npm install -g iptm-cli`.
+
+The CLI package provides a simple command line tool to compress and store / retrieve and decompress data. It requires access to an IPFS API, which you of course have if you are running an IPFS node locally.
 
 ## Compression
 
 The compression CLI tool allows compressing data from a file containing an arbitrary JSON array, or from standard input. It will transform the data, store it on IPFS, and return the hash of the root of the stored data structure.
 
-```shell
-$ npm run compress -- -v test.json
+Let's take a tiny example time series and compress it
 
-Input size       16265628
-Compressed size  216089
-Ratio            75.27
-IPFS dag objects 9
-zdpuAw2qxLonhUCukfSsRbhWnKfEJZCKPw2k5UAqHXF39kkuF
+```javascript
+[
+  { "time": 1523565937887, "value": 0.1 },
+  { "time": 1523565938890, "value": 0.2 },
+  { "time": 1523565939895, "value": 0.15 },
+  { "time": 1523565940896, "value": 0.25 },
+  { "time": 1523565941896, "value": 0.21 }
+]
 ```
+
+```shell
+$ iptm-cli compress -v tiny.json 
+Input size       220
+Compressed size  92
+Ratio            2.39
+IPFS dag objects 4
+zdpuAvbrekSTici1JrSmXEc1qvoumACsume7or75fLQKJTPjK
+```
+
+The achieved compression rate is nothing to write home about because the input data is so tiny. But we can take a look at the created ipfs dag objects.
+
+```shell
+ipfs dag get zdpuAvbrekSTici1JrSmXEc1qvoumACsume7or75fLQKJTPjK | jq
+```
+
+```javascript
+{
+  "children": {
+    "time": {
+      "values": [
+        { "/": "zdpuAkv5CRhdrEgzR6Dhp6euCJRqoPC7W2Ma4uf72cqbB4TkN" },
+        { "/": "zdpuB25fFrvuwq8Cv5jqGswutSgUHDZXrJRbEDgp1Ra2EkQgc" }
+      ]
+    },
+    "value": {
+      "values": [
+        { "/": "zdpuAkv5CRhdrEgzR6Dhp6euCJRqoPC7W2Ma4uf72cqbB4TkN" },
+        { "/": "zdpuAvFr6dxN4oFQJVNM2xY6EQ75djk1qiDwxhGvwSwQfWCV6" }
+      ]
+    }
+  }
+}
+```
+
+If you look carefully you will notice that the index array for both the `time` and `value` field is identical, so we store only 3 ipfs objects plus the index object.
+
+To get the value field, we can use IPLD links follow the link
+
+```shell
+ipfs dag get zdpuAvbrekSTici1JrSmXEc1qvoumACsume7or75fLQKJTPjK/children/value/values/1
+```
+
+```javascript
+[0.1,0.2,0.15,0.25,0.21]
+```
+
+Note that because the array is so tiny, the data was stored uncompressed.
 
 ## Decompression
 
 Decompression takes a single argument: the hash of a compressed IPFS dag object. It retrieves the data, decompresses it, applies the columnar to row transform, and produces the original JSON.
 
+```shell
+$ iptm-cli decompress zdpuAw2qxLonhUCukfSsRbhWnKfEJZCKPw2k5UAqHXF39kkuF
+```
+
+```javascript
+[
+  { "time": 1523565937887, "value": 0.1 },
+  { "time": 1523565938890, "value": 0.2 },
+  { "time": 1523565939895, "value": 0.15 },
+  { "time": 1523565940896, "value": 0.25 },
+  { "time": 1523565941896, "value": 0.21 }
+]
+```
+
+# Trials
+
+
+
 ## License
 
 The code is licensed under the [Apache 2](https://www.apache.org/licenses/LICENSE-2.0.html) license.
-
