@@ -20,7 +20,7 @@ with the ability to write code that is almost as fast as physically possible.
 
 So, what should rust focus on in 2020?
 
-I think that rust as it is is an very expressive language. I am not sure it desperately needs major new features
+I think that rust as it is is a very expressive language. I am not sure it desperately needs major new features
 at this time. Many people say that it needs higher kinded types, but I think that they should be introduced very
 carefully, if at all. Rust is already a rather complex language, and for a language that strives to be used in
 production it is very important not to overspend on the complexity budget.
@@ -34,6 +34,9 @@ coming from OO languages will often try to introduce inheritance hierarchies and
 quickly. People coming from javascript/typescript will reach for functions/closures way too often and be put off
 by the somewhat complex semantics of closures. People coming from the JVM will have misconceptions WRT performance.
 I have seen many of these things and even did many of these mistakes myself.
+
+Partially the idiomatic style to write rust still needs to be discovered. E.g. just because there is now syntax
+for it, peppering async/await all over the code might *not* the best solution for async code.
 
 - Tooling
 
