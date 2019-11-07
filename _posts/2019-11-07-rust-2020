@@ -3,19 +3,20 @@ layout: post
 title: Rust 2020
 ---
 
-A week ago, the rust language team has [called for blog posts] about the future of the rust language.
+A week ago, the rust language team has [called for blog posts](https://blog.rust-lang.org/2019/10/29/A-call-for-blogs-2020.html)
+about the future of the rust language.
 
 I am not really a part of the rust community. My biggest community contribution so far was to organize a
-meetup. I have recently started publishing a few open source libraries on crates.io . But here are my 2 cents
-anyway.
+[meetup](https://www.meetup.com/de-DE/rust-munich/events/259984522/). I have recently started publishing a
+few open source libraries on crates.io. But here are my 2 cents anyway.
 
 First of all, I absolutely love rust. It combines my love for writing code that is as efficient as physically
 possible with my love for abstraction. I started programming on very low powered hardware (Atari 800, then C16),
 so the desire to optimize things is very natural for me. In 2003 I discovered functional programming with an
-obscure but totally awesome programming language called clean, and was totally blown away.
+obscure but totally awesome programming language called [clean](https://clean.cs.ru.nl/Clean), and was blown away.
 
 I find rust very appealing because it combines the power of abstraction from strictly typed functional languages
-with the ability to write code that is as fast as physically possible.
+with the ability to write code that is almost as fast as physically possible.
 
 So, what should rust focus on in 2020?
 
@@ -39,9 +40,14 @@ I have seen many of these things and even did many of these mistakes myself.
 Tooling for rust is already quite a bit better than it was in the early days of scala. Publishing something on 
 crates.io is a breeze, and the vscode extension sometimes works surprisingly well. That being said things are
 far from perfect. E.g. the vscode plugin is not solid. Sometimes it stops working for me for no apparent reason.
-Tooling for performance optimization and coverage could be better. Also, it seems that publishing on crates.io
-currently requires a github account. That is nice and convenient, but does that mean that microsoft is effectively
-the guardian of the entire rust ecosystem?
+Tooling for performance optimization and coverage could be better.
+
+Also, it seems that publishing on crates.io currently requires a github account. That is nice and convenient, but
+does that mean that the US company microsoft is effectively the guardian of the entire rust ecosystem, and
+participation in the rust library ecosystem requires
+[compliance with US laws](https://techcrunch.com/2019/07/29/github-ban-sanctioned-countries/)?
+
+What if the US puts even more countries on their sanctions list?
 
 - Library ecosystem
 
