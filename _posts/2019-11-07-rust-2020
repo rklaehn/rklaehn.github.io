@@ -10,9 +10,9 @@ I am not really a part of the rust community. My biggest community contribution 
 [meetup](https://www.meetup.com/de-DE/rust-munich/events/259984522/). I have recently started publishing a
 few open source libraries on crates.io. But here are my 2 cents anyway.
 
-First of all, I absolutely love rust. It combines my love for writing code that is as efficient as physically
+First of all, I absolutely love rust. It combines my desire for writing code that is as efficient as physically
 possible with my love for abstraction. I started programming on very low powered hardware (Atari 800, then C16),
-so the desire to optimize things is very natural for me. In 2003 I discovered functional programming with an
+so the need to optimize things is very natural for me. In 2003 I discovered functional programming with an
 obscure but totally awesome programming language called [clean](https://clean.cs.ru.nl/Clean), and was blown away.
 
 I find rust very appealing because it combines the power of abstraction from strictly typed functional languages
