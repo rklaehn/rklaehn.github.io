@@ -1,0 +1,54 @@
+---
+layout: post
+title: Rust 2020
+---
+
+A week ago, the rust language team has [called for blog posts] about the future of the rust language.
+
+I am not really a part of the rust community. My biggest community contribution so far was to organize a
+meetup. I have recently started publishing a few open source libraries on crates.io . But here are my 2 cents
+anyway.
+
+First of all, I absolutely love rust. It combines my love for writing code that is as efficient as physically
+possible with my love for abstraction. I started programming on very low powered hardware (Atari 800, then C16),
+so the desire to optimize things is very natural for me. In 2003 I discovered functional programming with an
+obscure but totally awesome programming language called clean, and was totally blown away.
+
+I find rust very appealing because it combines the power of abstraction from strictly typed functional languages
+with the ability to write code that is as fast as physically possible.
+
+So, what should rust focus on in 2020?
+
+I think that rust as it is is an very expressive language. I am not sure it desperately needs major new features
+at this time. Many people say that it needs higher kinded types, but I think that they should be introduced very
+carefully, if at all. Rust is already a rather complex language, and for a language that strives to be used in
+production it is very important not to overspend on the complexity budget.
+
+What the rust community should focus on, IMHO, is these things:
+
+- Education to allow people to write idiomatic rust. This is *not* easy.
+
+People coming from statically typed functional languages will often try to reach for higher kinded types. People
+coming from OO languages will often try to introduce inheritance hierarchies and reach for dynamic dispatch too
+quickly. People coming from javascript/typescript will reach for functions/closures way too often and be put off
+by the somewhat complex semantics of closures. People coming from the JVM will have misconceptions WRT performance.
+I have seen many of these things and even did many of these mistakes myself.
+
+- Tooling
+
+Tooling for rust is already quite a bit better than it was in the early days of scala. Publishing something on 
+crates.io is a breeze, and the vscode extension sometimes works surprisingly well. That being said things are
+far from perfect. E.g. the vscode plugin is not solid. Sometimes it stops working for me for no apparent reason.
+Tooling for performance optimization and coverage could be better. Also, it seems that publishing on crates.io
+currently requires a github account. That is nice and convenient, but does that mean that microsoft is effectively
+the guardian of the entire rust ecosystem?
+
+- Library ecosystem
+
+Now that async/await has landed in stable rust, the library ecosystem needs time to catch up. Also, just because
+there is now async/await does not mean that it is always the best solution.
+
+
+Anyway, these are my thoughts,
+
+Rüdiger
