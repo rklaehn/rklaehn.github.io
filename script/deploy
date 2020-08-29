@@ -3,7 +3,7 @@ set -e # halt script on error
 # get ipfs (version must match what you have on your node
 wget -qO- https://dist.ipfs.io/go-ipfs/v0.6.0/go-ipfs_v0.6.0_linux-amd64.tar.gz | tar xz
 # open tunnel to ipfs node
-ssh -N -L 5001:localhost:5001 ubuntu@34.229.86.216 &
+ssh -i deploy_rsa -o StrictHostKeyChecking=no -N -L 5001:localhost:5001 ubuntu@klaehn.org &
 # wait for some time for the tunnel to be established
 sleep 10
 # add jekyll output to ipfs
