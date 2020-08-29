@@ -47,3 +47,4 @@ highlighter: rouge
 
 gems: [jekyll-paginate]
     
+plugins: [jekyll-paginate]
