@@ -1,0 +1,17 @@
+base_url = "https://rklaehn.github.io"
+title = "Rüdiger's Blog"
+description = "A minimal blog about Rust, systems programming, and other things."
+compile_sass = true
+minify_html = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+taxonomies = [
+    { name = "tags" },
+]
+
+[markdown.highlighting]
+theme = "github-dark"
+
+[extra]
+author = "Rüdiger Klaehn"

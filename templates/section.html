@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} | {{ config.title }}{% endblock title %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+{% if section.content %}
+{{ section.content | safe }}
+{% endif %}
+
+<ul class="post-list">
+{% for page in section.pages %}
+  <li>
+    <time>{{ page.date | default(value="") }}</time>
+    {% if page.extra.external_url %}
+    <a href="{{ page.extra.external_url }}" class="external">{{ page.title }} ↗</a>
+    {% else %}
+    <a href="{{ page.permalink }}">{{ page.title }}</a>
+    {% endif %}
+    {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock content %}

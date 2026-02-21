@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ section.title | default(value=config.title) }}</h1>
+{% if section.content %}
+{{ section.content | safe }}
+{% endif %}
+
+{% if section.subsections %}
+{% for path in section.subsections %}
+  {% set subsection = get_section(path=path) %}
+  <h2><a href="{{ subsection.permalink }}">{{ subsection.title }}</a></h2>
+  {% if subsection.description %}
+  <p>{{ subsection.description }}</p>
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if section.pages %}
+<ul class="post-list">
+{% for page in section.pages %}
+  <li>
+    <time>{{ page.date | default(value="") }}</time>
+    <a href="{{ page.permalink }}">{{ page.title }}</a>
+  </li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}

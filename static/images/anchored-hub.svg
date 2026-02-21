@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 225 600 175">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d8d8d8"/>
+      <stop offset="20%" stop-color="#f0f0f0"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="80%" stop-color="#f0f0f0"/>
+      <stop offset="100%" stop-color="#d0d0d0"/>
+    </linearGradient>
+    <linearGradient id="skirtGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#777"/>
+      <stop offset="30%" stop-color="#999"/>
+      <stop offset="70%" stop-color="#999"/>
+      <stop offset="100%" stop-color="#6a6a6a"/>
+    </linearGradient>
+    <linearGradient id="legGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#888"/>
+      <stop offset="50%" stop-color="#aaa"/>
+      <stop offset="100%" stop-color="#888"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .tether { stroke: #667; stroke-width: 1; stroke-linecap: round; }
+    .hook { stroke: #d4822a; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .surface { fill: #e0ddd5; stroke: none; }
+    .surface-line { stroke: #aaa; stroke-width: 1.5; fill: none; }
+    .boom { stroke: #556; stroke-width: 1; fill: none; }
+    .panel-line { stroke: #ccc; stroke-width: 0.5; }
+    .tie { stroke: #d4822a; stroke-width: 1.5; fill: none; stroke-linecap: round; }
+    .anchor-shaft { stroke: #8a6030; stroke-width: 2; fill: none; stroke-linecap: round; }
+    .anchor-thread { stroke: #8a6030; stroke-width: 1; fill: none; }
+    .anchor-plate { fill: #8a6030; stroke: #6a4020; stroke-width: 0.5; }
+  </style>
+
+  <!-- Sky -->
+  <rect width="600" height="400" fill="#1a1a2e"/>
+
+  <!-- Lunar surface -->
+  <path class="surface" d="M 0 345 Q 300 325 600 345 L 600 400 L 0 400 Z"/>
+  <path class="surface-line" d="M 0 345 Q 300 325 600 345"/>
+
+  <!-- Left tie-down cable: from upper body to anchor at 45 deg -->
+  <line class="tie" x1="291" y1="270" x2="226" y2="335"/>
+
+  <!-- Left screw anchor -->
+  <rect class="anchor-plate" x="220" y="334" width="12" height="3" rx="1"/>
+  <line class="anchor-shaft" x1="226" y1="337" x2="226" y2="362"/>
+  <line class="anchor-thread" x1="223" y1="341" x2="229" y2="339"/>
+  <line class="anchor-thread" x1="223" y1="345" x2="229" y2="343"/>
+  <line class="anchor-thread" x1="223" y1="349" x2="229" y2="347"/>
+  <line class="anchor-thread" x1="223" y1="353" x2="229" y2="351"/>
+  <line class="anchor-thread" x1="223" y1="357" x2="229" y2="355"/>
+  <path d="M 226 362 L 224 365 L 228 365 Z" fill="#8a6030" stroke="none"/>
+
+  <!-- Right tie-down cable: from upper body to anchor at 45 deg -->
+  <line class="tie" x1="309" y1="270" x2="374" y2="335"/>
+
+  <!-- Right screw anchor -->
+  <rect class="anchor-plate" x="368" y="334" width="12" height="3" rx="1"/>
+  <line class="anchor-shaft" x1="374" y1="337" x2="374" y2="362"/>
+  <line class="anchor-thread" x1="371" y1="341" x2="377" y2="339"/>
+  <line class="anchor-thread" x1="371" y1="345" x2="377" y2="343"/>
+  <line class="anchor-thread" x1="371" y1="349" x2="377" y2="347"/>
+  <line class="anchor-thread" x1="371" y1="353" x2="377" y2="351"/>
+  <line class="anchor-thread" x1="371" y1="357" x2="377" y2="355"/>
+  <path d="M 374 362 L 372 365 L 376 365 Z" fill="#8a6030" stroke="none"/>
+
+  <!-- Landing legs -->
+  <path d="M 291.5 314 L 270 338 L 277 338 L 293.5 321.5 Z" fill="url(#legGrad)" stroke="#666" stroke-width="0.5"/>
+  <rect x="267.5" y="337" width="11" height="2" rx="1" fill="#777" stroke="#666" stroke-width="0.5"/>
+  <path d="M 308.5 314 L 330 338 L 323 338 L 306.5 321.5 Z" fill="url(#legGrad)" stroke="#666" stroke-width="0.5"/>
+  <rect x="321.5" y="337" width="11" height="2" rx="1" fill="#777" stroke="#666" stroke-width="0.5"/>
+  <path d="M 296.5 319 L 284 338 L 288 338 L 298 323 Z" fill="#999" stroke="#666" stroke-width="0.5" opacity="0.7"/>
+  <rect x="282" y="337" width="7" height="1.5" rx="0.75" fill="#777" stroke="#666" stroke-width="0.5" opacity="0.7"/>
+  <path d="M 303.5 319 L 316 338 L 312 338 L 302 323 Z" fill="#999" stroke="#666" stroke-width="0.5" opacity="0.7"/>
+  <rect x="311" y="337" width="7" height="1.5" rx="0.75" fill="#777" stroke="#666" stroke-width="0.5" opacity="0.7"/>
+
+  <!-- Engine skirt + nozzles -->
+  <path d="M 290 316.5 L 288.5 330 L 311.5 330 L 310 316.5 Z" fill="url(#skirtGrad)" stroke="#666" stroke-width="0.5"/>
+  <path d="M 295.5 330 L 294.5 333.5 L 298.5 333.5 L 297.5 330 Z" fill="#555" stroke="#444" stroke-width="0.5"/>
+  <path d="M 298.5 330 L 297.5 333.5 L 302.5 333.5 L 301.5 330 Z" fill="#555" stroke="#444" stroke-width="0.5"/>
+  <path d="M 302.5 330 L 301.5 333.5 L 305.5 333.5 L 304.5 330 Z" fill="#555" stroke="#444" stroke-width="0.5"/>
+
+  <!-- Main body -->
+  <rect x="291" y="261.5" width="18" height="56" rx="1.5" fill="url(#bodyGrad)" stroke="#aaa" stroke-width="0.5"/>
+  <line class="panel-line" x1="296" y1="262.5" x2="296" y2="316.5"/>
+  <line class="panel-line" x1="300" y1="262.5" x2="300" y2="316.5"/>
+  <line class="panel-line" x1="304" y1="262.5" x2="304" y2="316.5"/>
+  <line class="panel-line" x1="291.5" y1="279" x2="308.5" y2="279"/>
+  <line class="panel-line" x1="291.5" y1="296.5" x2="308.5" y2="296.5"/>
+  <line class="panel-line" x1="291.5" y1="306.5" x2="308.5" y2="306.5"/>
+  <rect x="291" y="299" width="18" height="7" fill="#333" opacity="0.15"/>
+  <rect x="290" y="260" width="20" height="2.5" rx="1.25" fill="#bbb" stroke="#999" stroke-width="0.5"/>
+  <rect x="290" y="269" width="1.5" height="3" rx="0.5" fill="#999"/>
+  <rect x="308.5" y="269" width="1.5" height="3" rx="0.5" fill="#999"/>
+
+  <!-- Boom -->
+  <line class="boom" x1="200" y1="259" x2="400" y2="259"/>
+  <line class="boom" x1="200" y1="263" x2="400" y2="263"/>
+  <line class="boom" x1="200" y1="259" x2="208" y2="263"/>
+  <line class="boom" x1="208" y1="263" x2="216" y2="259"/>
+  <line class="boom" x1="216" y1="259" x2="224" y2="263"/>
+  <line class="boom" x1="224" y1="263" x2="232" y2="259"/>
+  <line class="boom" x1="232" y1="259" x2="240" y2="263"/>
+  <line class="boom" x1="240" y1="263" x2="248" y2="259"/>
+  <line class="boom" x1="248" y1="259" x2="256" y2="263"/>
+  <line class="boom" x1="256" y1="263" x2="264" y2="259"/>
+  <line class="boom" x1="264" y1="259" x2="272" y2="263"/>
+  <line class="boom" x1="272" y1="263" x2="280" y2="259"/>
+  <line class="boom" x1="280" y1="259" x2="288" y2="263"/>
+  <line class="boom" x1="288" y1="263" x2="290" y2="261.5"/>
+  <line class="boom" x1="310" y1="261.5" x2="312" y2="263"/>
+  <line class="boom" x1="312" y1="263" x2="320" y2="259"/>
+  <line class="boom" x1="320" y1="259" x2="328" y2="263"/>
+  <line class="boom" x1="328" y1="263" x2="336" y2="259"/>
+  <line class="boom" x1="336" y1="259" x2="344" y2="263"/>
+  <line class="boom" x1="344" y1="263" x2="352" y2="259"/>
+  <line class="boom" x1="352" y1="259" x2="360" y2="263"/>
+  <line class="boom" x1="360" y1="263" x2="368" y2="259"/>
+  <line class="boom" x1="368" y1="259" x2="376" y2="263"/>
+  <line class="boom" x1="376" y1="263" x2="384" y2="259"/>
+  <line class="boom" x1="384" y1="259" x2="392" y2="263"/>
+  <line class="boom" x1="392" y1="263" x2="400" y2="259"/>
+  <line class="boom" x1="200" y1="257.5" x2="200" y2="264.5"/>
+  <line class="boom" x1="400" y1="257.5" x2="400" y2="264.5"/>
+
+  <!-- Left tether with hook -->
+  <line class="tether" x1="200" y1="264.5" x2="200" y2="314"/>
+  <path class="hook" d="M 200 314 L 200 319 A 6 6 0 0 1 198.2 323.2 A 3.5 3.5 0 0 0 197.2 325.7 A 2.5 2.5 0 0 0 202.2 325.7"/>
+
+  <!-- Right tether with hook -->
+  <line class="tether" x1="400" y1="264.5" x2="400" y2="314"/>
+  <path class="hook" d="M 400 314 L 400 319 A 6 6 0 0 0 401.8 323.2 A 3.5 3.5 0 0 1 402.8 325.7 A 2.5 2.5 0 0 1 397.8 325.7"/>
+</svg>
