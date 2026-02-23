@@ -2,6 +2,7 @@
 title = "Lunar Sling Launchers"
 date = 2026-02-21
 description = "Using rotating slings to fling payloads off the Moon without rockets."
+aliases = ["/blog/lunar-tether-catapults/"]
 [taxonomies]
 tags = ["space", "propulsion"]
 +++
@@ -157,7 +158,7 @@ For an initial system there is even a location on the equator of the lunar far s
 
 ![Sling launcher demonstration](/images/sling-launcher-demo.gif)
 
-*Simulation using [nyx-space](https://nyxspace.com), visualization using [bevy](https://bevyengine.org), coded with Claude*
+*[Simulation](https://github.com/rklaehn/solar-system-sim) using [nyx-space](https://nyxspace.com), visualization using [bevy](https://bevyengine.org), coded with Claude*
 
 ## Mass budget of an initial system
 
