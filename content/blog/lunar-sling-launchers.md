@@ -155,6 +155,10 @@ I used the excellent [nyx][nyx] and [anise][anise] rust crates to write a trajec
 
 For an initial system there is even a location on the equator of the lunar far side where you can launch to EML1 with the same velocity both retrograde and prograde.
 
+![Sling launcher demonstration](/images/sling-launcher-demo.gif)
+
+*Simulation using [nyx-space](https://nyxspace.com), visualization using [bevy](https://bevyengine.org), coded with Claude*
+
 ## Mass budget of an initial system
 
 The best way to design an initial system would be to use a large lander such as Lunar Starship as the tower base.
