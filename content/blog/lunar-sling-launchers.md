@@ -1,6 +1,6 @@
 +++
 title = "Lunar Sling Launchers"
-date = 2026-02-21
+date = 2026-02-22
 description = "Using rotating slings to fling payloads off the Moon without rockets."
 aliases = ["/blog/lunar-tether-catapults/"]
 [taxonomies]
