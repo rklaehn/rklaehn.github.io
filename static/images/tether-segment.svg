@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <style>
+    .spring { stroke: #889; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .mass-node { fill: #666; stroke: #444; stroke-width: 1; }
+    .tether-section { fill: #556; stroke: #778; stroke-width: 1; }
+    .label { font-family: sans-serif; font-size: 13px; fill: #ccc; }
+    .label-small { font-family: sans-serif; font-size: 11px; fill: #aaa; }
+    .label-tiny { font-family: sans-serif; font-size: 10px; fill: #999; }
+    .label-math { font-family: serif; font-size: 13px; fill: #ccc; font-style: italic; }
+    .dim-line { stroke: #77a; stroke-width: 0.8; }
+    .dim-dash { stroke: #556; stroke-width: 0.7; stroke-dasharray: 3,2; }
+    .arrow-line { stroke: #77a; stroke-width: 1; }
+    .equiv { font-family: sans-serif; font-size: 18px; fill: #889; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="300" fill="#1a1a2e"/>
+
+  <!-- === TOP: continuous tether section === -->
+  <text x="300" y="28" class="label" text-anchor="middle">Single Segment Discretization</text>
+
+  <!-- Continuous tether piece with rounded right end -->
+  <path d="M 80 60 L 280 60 A 4 10 0 0 1 280 80 L 80 80 Z" fill="#556" stroke="#778" stroke-width="1"/>
+  <path d="M 80 62 L 280 62 A 3 2 0 0 1 280 66 L 80 66 Z" fill="#667" opacity="0.3"/>
+
+  <!-- Cross-section: left cut face -->
+  <ellipse cx="80" cy="70" rx="4" ry="10" fill="#445" stroke="#667" stroke-width="0.8"/>
+
+  <!-- Dimension: length l -->
+  <line x1="80" y1="90" x2="280" y2="90" class="dim-line"/>
+  <line x1="80" y1="85" x2="80" y2="95" class="dim-line"/>
+  <line x1="280" y1="85" x2="280" y2="95" class="dim-line"/>
+  <polygon points="80,90 88,87 88,93" fill="#77a"/>
+  <polygon points="280,90 272,87 272,93" fill="#77a"/>
+  <text x="180" y="105" class="label-math" text-anchor="middle">l</text>
+
+  <!-- Cross-section area label -->
+  <text x="55" y="55" class="label-math" text-anchor="middle">A</text>
+  <line x1="55" y1="58" x2="75" y2="65" class="dim-dash"/>
+
+  <!-- Material labels on right -->
+  <text x="300" y="63" class="label-small">density: <tspan class="label-math">&#x3C1;</tspan></text>
+  <text x="300" y="78" class="label-small">Young's modulus: <tspan class="label-math">E</tspan></text>
+
+  <!-- === Equivalence arrow === -->
+  <line x1="180" y1="118" x2="180" y2="155" stroke="#889" stroke-width="2"/>
+  <polygon points="173,150 180,162 187,150" fill="#889"/>
+
+  <!-- === BOTTOM: spring + mass segment === -->
+
+  <!-- Left connection point -->
+  <circle cx="80" cy="185" r="3" fill="#556" stroke="#778" stroke-width="1"/>
+
+  <!-- Spring (zigzag centered between connection point and mass) -->
+  <path class="spring" d="M 83 185 L 93 185 L 113 172 L 133 198 L 153 172 L 173 198 L 193 172 L 213 198 L 233 172 L 253 185 L 265 185"/>
+
+  <!-- Mass (at rest position, right end of segment) -->
+  <circle cx="280" cy="185" r="15" class="mass-node"/>
+  <text x="280" y="190" class="label-math" text-anchor="middle">m</text>
+
+  <!-- Dimension: rest length l -->
+  <line x1="80" y1="215" x2="280" y2="215" class="dim-line"/>
+  <line x1="80" y1="210" x2="80" y2="220" class="dim-line"/>
+  <line x1="280" y1="210" x2="280" y2="220" class="dim-line"/>
+  <polygon points="80,215 88,212 88,218" fill="#77a"/>
+  <polygon points="280,215 272,212 272,218" fill="#77a"/>
+  <text x="180" y="230" class="label-math" text-anchor="middle">l</text>
+
+  <!-- === RIGHT: equations === -->
+  <text x="380" y="165" class="label-math" text-anchor="start">m</text>
+  <text x="397" y="165" class="label-small" text-anchor="start"> = </text>
+  <text x="415" y="165" class="label-math" text-anchor="start">&#x3C1; &#xB7; A &#xB7; l</text>
+
+  <text x="380" y="195" class="label-math" text-anchor="start">k</text>
+  <text x="397" y="195" class="label-small" text-anchor="start"> = </text>
+  <text x="415" y="195" class="label-math" text-anchor="start">E &#xB7; A / l</text>
+
+  <!-- Annotation for spring constant -->
+  <text x="380" y="140" class="label-tiny" text-anchor="start">segment properties:</text>
+
+  <!-- Bottom note -->
+  <text x="300" y="275" class="label-tiny" text-anchor="middle">n segments &#x2192; total tether length L = n &#xB7; l, total mass M = n &#xB7; m</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <style>
+    .tether { stroke: #667; stroke-width: 1.5; stroke-linecap: round; }
+    .reel-line { stroke: #889; stroke-width: 1; stroke-linecap: round; stroke-dasharray: 3,2; }
+    .label { font-family: sans-serif; font-size: 12px; fill: #ccc; }
+    .label-small { font-family: sans-serif; font-size: 10px; fill: #aaa; }
+    .label-tiny { font-family: sans-serif; font-size: 9px; fill: #999; }
+    .dim-line { stroke: #556; stroke-width: 0.7; stroke-dasharray: 3,2; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="200" fill="#1a1a2e"/>
+
+  <!-- Hub anchor (left) -->
+  <rect x="40" y="78" width="16" height="24" rx="2" fill="#888" stroke="#666" stroke-width="1"/>
+  <line x1="40" y1="82" x2="40" y2="98" stroke="#555" stroke-width="2.5"/>
+  <text x="48" y="118" class="label-tiny" text-anchor="middle">hub</text>
+
+  <!-- Main tether (tapered, hub to reel) -->
+  <polygon points="56,86 400,89 400,91 56,94" fill="#667" stroke="#778" stroke-width="0.5"/>
+
+  <!-- Reel drum -->
+  <circle cx="416" cy="90" r="16" fill="#444" stroke="#666" stroke-width="1.5"/>
+  <circle cx="416" cy="90" r="2" fill="#888"/>
+  <!-- Tether wraps on reel -->
+  <path d="M 407 80 A 8 8 0 0 1 425 84" stroke="#778" stroke-width="0.8" fill="none"/>
+  <path d="M 408 98 A 9 9 0 0 0 424 96" stroke="#778" stroke-width="0.8" fill="none"/>
+
+  <!-- Disk brake (smaller than reel) -->
+  <!-- Rotor disc - metal gray, r=11 < reel r=16 -->
+  <circle cx="416" cy="90" r="11" fill="none" stroke="#aaa" stroke-width="1.5"/>
+  <!-- Caliper - bright red, clamping rotor at top -->
+  <path d="M 409 79 L 409 75 Q 409 73 411 73 L 421 73 Q 423 73 423 75 L 423 79"
+        fill="#cc2222" stroke="#aa1111" stroke-width="0.5"/>
+  <rect x="410" y="79" width="12" height="2" rx="0.5" fill="#dd3333"/>
+  <rect x="410" y="78" width="12" height="1.5" rx="0.3" fill="#bb4444" opacity="0.6"/>
+
+  <text x="416" y="126" class="label-tiny" text-anchor="middle">reel with brake</text>
+
+  <!-- Extension tether from reel to payload -->
+  <line x1="432" y1="90" x2="520" y2="90" class="reel-line"/>
+
+  <!-- Payload -->
+  <circle cx="536" cy="90" r="16" fill="#666" stroke="#444" stroke-width="1.5"/>
+  <circle cx="533" cy="87" r="2.5" fill="#888" opacity="0.5"/>
+  <text x="536" y="122" class="label-tiny" text-anchor="middle">payload</text>
+
+  <!-- Dimension: main tether -->
+  <line x1="56" y1="140" x2="400" y2="140" class="dim-line"/>
+  <line x1="56" y1="136" x2="56" y2="144" stroke="#556" stroke-width="0.7"/>
+  <line x1="400" y1="136" x2="400" y2="144" stroke="#556" stroke-width="0.7"/>
+  <text x="228" y="155" class="label-tiny" text-anchor="middle">main tether (tapered)</text>
+
+  <!-- Dimension: reel extension -->
+  <line x1="432" y1="140" x2="520" y2="140" class="dim-line"/>
+  <line x1="432" y1="136" x2="432" y2="144" stroke="#556" stroke-width="0.7"/>
+  <line x1="520" y1="136" x2="520" y2="144" stroke="#556" stroke-width="0.7"/>
+  <text x="476" y="155" class="label-tiny" text-anchor="middle">extension</text>
+
+  <!-- Centrifugal force arrow on payload -->
+  <line x1="556" y1="90" x2="580" y2="90" stroke="#4ae" stroke-width="1.5"/>
+  <polygon points="576,86 586,90 576,94" fill="#4ae"/>
+  <text x="576" y="80" class="label-tiny" text-anchor="middle" fill="#4ae">F</text>
+</svg>

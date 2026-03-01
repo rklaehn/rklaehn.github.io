@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <style>
+    .tether { stroke: #667; stroke-width: 2; stroke-linecap: round; }
+    .tether-wavy { stroke: #667; stroke-width: 2; fill: none; stroke-linecap: round; }
+    .arrow { stroke-width: 2; stroke-linecap: round; }
+    .label { font-family: sans-serif; font-size: 13px; fill: #ccc; }
+    .label-small { font-family: sans-serif; font-size: 11px; fill: #aaa; }
+    .anchor { fill: #888; stroke: #666; stroke-width: 1; }
+    .mass { fill: #666; stroke: #444; stroke-width: 1; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="300" fill="#1a1a2e"/>
+
+  <!-- Divider -->
+  <line x1="300" y1="30" x2="300" y2="270" stroke="#334" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- === LEFT: Longitudinal === -->
+  <text x="150" y="35" class="label" text-anchor="middle">Longitudinal</text>
+
+  <!-- Anchor point -->
+  <rect x="60" y="130" width="16" height="40" rx="2" class="anchor"/>
+  <line x1="60" y1="135" x2="60" y2="165" stroke="#555" stroke-width="3"/>
+
+  <!-- Tether at rest (dashed) -->
+  <line x1="76" y1="150" x2="230" y2="150" stroke="#445" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Tether stretched -->
+  <line x1="76" y1="150" x2="250" y2="150" class="tether"/>
+
+  <!-- Mass -->
+  <circle cx="250" cy="150" r="10" class="mass"/>
+  <circle cx="248" cy="148" r="2" fill="#888" opacity="0.5"/>
+
+  <!-- Longitudinal arrows (back and forth along tether) -->
+  <line x1="240" y1="185" x2="215" y2="185" stroke="#e74" class="arrow"/>
+  <polygon points="215,181 207,185 215,189" fill="#e74"/>
+  <line x1="260" y1="185" x2="285" y2="185" stroke="#e74" class="arrow"/>
+  <polygon points="285,181 293,185 285,189" fill="#e74"/>
+
+  <text x="250" y="210" class="label-small" text-anchor="middle">stretch / compress</text>
+
+  <!-- === RIGHT: Lateral === -->
+  <text x="450" y="35" class="label" text-anchor="middle">Lateral</text>
+
+  <!-- Anchor point -->
+  <rect x="360" y="130" width="16" height="40" rx="2" class="anchor"/>
+  <line x1="360" y1="135" x2="360" y2="165" stroke="#555" stroke-width="3"/>
+
+  <!-- Tether at rest (dashed straight line) -->
+  <line x1="376" y1="150" x2="550" y2="150" stroke="#445" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Tether deflected (wavy/curved) -->
+  <path class="tether-wavy" d="M 376 150 Q 420 150 440 135 Q 460 120 480 135 Q 500 150 520 145 Q 540 140 550 150"/>
+
+  <!-- Mass -->
+  <circle cx="550" cy="150" r="10" class="mass"/>
+  <circle cx="548" cy="148" r="2" fill="#888" opacity="0.5"/>
+
+  <!-- Lateral arrows (perpendicular to tether) -->
+  <line x1="463" y1="105" x2="463" y2="85" stroke="#4ae" class="arrow"/>
+  <polygon points="459,85 463,77 467,85" fill="#4ae"/>
+  <line x1="463" y1="150" x2="463" y2="170" stroke="#4ae" class="arrow"/>
+  <polygon points="459,170 463,178 467,170" fill="#4ae"/>
+
+  <text x="450" y="210" class="label-small" text-anchor="middle">transverse oscillation</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <style>
+    .spring { stroke: #889; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .mass-node { fill: #666; stroke: #444; stroke-width: 1; }
+    .anchor { fill: #888; stroke: #666; stroke-width: 1; }
+    .label { font-family: sans-serif; font-size: 13px; fill: #ccc; }
+    .label-small { font-family: sans-serif; font-size: 11px; fill: #aaa; }
+    .label-tiny { font-family: sans-serif; font-size: 10px; fill: #999; }
+    .brace { stroke: #667; stroke-width: 1; fill: none; }
+    .dim-line { stroke: #556; stroke-width: 0.8; stroke-dasharray: 3,2; }
+  </style>
+
+  <!-- Background -->
+  <rect width="600" height="260" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="300" y="30" class="label" text-anchor="middle">Mass-Spring Tether Model</text>
+
+  <!-- Anchor (hub) -->
+  <rect x="42" y="95" width="20" height="40" rx="3" class="anchor"/>
+  <line x1="42" y1="100" x2="42" y2="130" stroke="#555" stroke-width="3"/>
+  <text x="52" y="155" class="label-tiny" text-anchor="middle">hub</text>
+
+  <!-- Spring 1: hub to mass 1 -->
+  <path class="spring" d="M 62 115 L 72 115 L 76 105 L 84 125 L 92 105 L 100 125 L 108 105 L 116 125 L 120 115 L 130 115"/>
+
+  <!-- Mass 1 -->
+  <circle cx="140" cy="115" r="10" class="mass-node"/>
+  <text x="140" y="119" class="label-tiny" text-anchor="middle" fill="#bbb">m</text>
+
+  <!-- Spring 2: mass 1 to mass 2 -->
+  <path class="spring" d="M 150 115 L 160 115 L 164 106 L 172 124 L 180 106 L 188 124 L 196 106 L 204 124 L 208 115 L 218 115"/>
+
+  <!-- Mass 2 -->
+  <circle cx="228" cy="115" r="9" class="mass-node"/>
+  <text x="228" y="119" class="label-tiny" text-anchor="middle" fill="#bbb">m</text>
+
+  <!-- Spring 3: mass 2 to mass 3 -->
+  <path class="spring" d="M 237 115 L 248 115 L 252 107 L 260 123 L 268 107 L 276 123 L 284 107 L 292 123 L 296 115 L 306 115"/>
+
+  <!-- Mass 3 -->
+  <circle cx="316" cy="115" r="8" class="mass-node"/>
+  <text x="316" y="119" class="label-tiny" text-anchor="middle" fill="#bbb">m</text>
+
+  <!-- Spring 4: mass 3 to mass 4 -->
+  <path class="spring" d="M 324 115 L 336 115 L 340 108 L 348 122 L 356 108 L 364 122 L 372 108 L 380 122 L 384 115 L 394 115"/>
+
+  <!-- Mass 4 -->
+  <circle cx="404" cy="115" r="7" class="mass-node"/>
+  <text x="404" y="118" class="label-tiny" text-anchor="middle" fill="#bbb">m</text>
+
+  <!-- Spring 5: mass 4 to mass 5 (payload) -->
+  <path class="spring" d="M 411 115 L 424 115 L 428 109 L 436 121 L 444 109 L 452 121 L 460 109 L 468 121 L 472 115 L 482 115"/>
+
+  <!-- Payload mass (larger) -->
+  <circle cx="496" cy="115" r="14" fill="#666" stroke="#444" stroke-width="1.5"/>
+  <circle cx="493" cy="112" r="2.5" fill="#888" opacity="0.5"/>
+  <text x="496" y="150" class="label-tiny" text-anchor="middle">payload</text>
+
+  <!-- Dots indicating continuation could go here if needed -->
+
+  <!-- Bottom annotations -->
+  <!-- Spring constant label -->
+  <line x1="62" y1="170" x2="130" y2="170" class="dim-line"/>
+  <line x1="62" y1="166" x2="62" y2="174" stroke="#556" stroke-width="0.8"/>
+  <line x1="130" y1="166" x2="130" y2="174" stroke="#556" stroke-width="0.8"/>
+  <text x="96" y="185" class="label-tiny" text-anchor="middle">k, rest length l</text>
+
+  <!-- Continuous tether equivalent (subtly tapered) -->
+  <polygon points="62,207 486,209 486,211 62,213" fill="#667" stroke="#778" stroke-width="0.5"/>
+
+  <!-- End mass on continuous model -->
+  <circle cx="496" cy="210" r="10" fill="#666" stroke="#444" stroke-width="1"/>
+  <circle cx="494" cy="208" r="1.8" fill="#888" opacity="0.5"/>
+
+  <text x="279" y="235" class="label-small" text-anchor="middle">continuous tapered tether</text>
+
+  <!-- Arrows connecting model to continuous -->
+  <line x1="140" y1="125" x2="140" y2="205" stroke="#334" stroke-width="0.5" stroke-dasharray="2,3"/>
+  <line x1="496" y1="129" x2="496" y2="200" stroke="#334" stroke-width="0.5" stroke-dasharray="2,3"/>
+</svg>

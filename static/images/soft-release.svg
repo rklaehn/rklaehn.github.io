@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#0d1117" rx="8"/>
+
+  <!-- Orbit path guide -->
+  <circle cx="200" cy="150" r="80" fill="none" stroke="#333" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <!-- Hub -->
+  <circle cx="200" cy="150" r="3" fill="white"/>
+
+  <!-- Rotating group: one-arm tether with reel + payload -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      from="90 200 150" to="450 200 150"
+      dur="8s" repeatCount="indefinite"/>
+
+    <!-- Tether arm -->
+    <line x1="200" y1="150" x2="280" y2="150" stroke="#666" stroke-width="1.5"/>
+
+    <!-- Reel at tip -->
+    <circle cx="280" cy="150" r="4" fill="none" stroke="#889" stroke-width="1.5"/>
+    <circle cx="280" cy="150" r="1.5" fill="#889"/>
+
+    <!-- Connection line: reel edge (284) to payload -->
+    <!-- cx 288 -> 303: 15 units of reel-out, cubic (r = r0 + 15*tau^3) -->
+    <line x1="284" y1="150" x2="288" y2="150" stroke="#889" stroke-width="1" stroke-dasharray="2,2">
+      <animate attributeName="x2"
+        values="288;288;288;290;292;294;298;303;303;288"
+        keyTimes="0;0.50;0.5625;0.625;0.656;0.6875;0.719;0.75;0.76;1"
+        dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0;0"
+        keyTimes="0;0.02;0.749;0.751;1" dur="8s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Payload in rotating frame -->
+    <circle cx="288" cy="150" r="6" fill="#4ecdc4">
+      <animate attributeName="cx"
+        values="288;288;288;290;292;294;298;303;303;288"
+        keyTimes="0;0.50;0.5625;0.625;0.656;0.6875;0.719;0.75;0.76;1"
+        dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0;0"
+        keyTimes="0;0.02;0.749;0.751;1" dur="8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Released payload: continues along tangent + radial velocity vector -->
+  <!-- At t=0.75: angle=0 deg, tether right, payload at world (303,150) -->
+  <!-- v_tangential = 80.9 units/s (downward), v_radial = 22.5 units/s (rightward) -->
+  <!-- Over 1.2s: dx=27, dy=97 -> end (330, 247) -->
+  <circle cx="0" cy="0" r="6" fill="#4ecdc4">
+    <animateMotion
+      path="M 303,150 L 330,247"
+      keyPoints="0;0;1;1;0"
+      keyTimes="0;0.75;0.90;0.91;1"
+      calcMode="linear"
+      dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0;1;1;0;0"
+      keyTimes="0;0.749;0.751;0.86;0.91;1" dur="8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Label -->
+  <text x="200" y="288" font-family="sans-serif" font-size="10" fill="#555" text-anchor="middle">reel out (r = r&#x2080; + a&#xB7;t&#xB3;) &#x2192; release</text>
+</svg>
