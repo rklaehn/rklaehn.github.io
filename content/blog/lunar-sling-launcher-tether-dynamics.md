@@ -178,3 +178,5 @@ But there is only so much you can learn with qualitative LLM aided analysis. So 
 We are going to [design](https://www.onshape.com/), [3d print](https://bambulab.com/) and test a quick release mechanism with single digit millisecond release precision. We are going to learn how to [remote control](https://www.espressif.com/en/products/socs/esp32) the mechanism, and eventually build a subscale prototype of a lunar sling launcher.
 
 The only thing that limits us for an Earth based prototype is air resistance. But **all complex topics** such as release precision and release dynamics can be tested on Earth.
+
+The next part of this series will cover the design and testing of a release mechanism.
