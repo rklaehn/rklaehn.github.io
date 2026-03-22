@@ -184,6 +184,8 @@ I will leave military applications as an exercise for the reader.
 
 With a 1000 kW external power supply, the system could do 4 launches per Earth day, or 56 launches per lunar day. Once tied down, each launch is 2000 kg in 2 payloads. So the system would pay back its landed payload mass in less than a single lunar day, and could pay back >100x its payload mass over a 10 year lifetime.
 
+The next part of this series is performing an analysis of the [Tether Dynamics](/blog/lunar-sling-launcher-tether-dynamics/) of a sling launcher.
+
 ## References
 
 - Gerard K. O'Neill, *[The High Frontier: Human Colonies in Space][high-frontier]*, William Morrow and Company, 1976.
