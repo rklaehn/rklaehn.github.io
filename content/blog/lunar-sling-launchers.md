@@ -186,6 +186,12 @@ With a 1000 kW external power supply, the system could do 4 launches per Earth d
 
 The next part of this series is performing an analysis of the [Tether Dynamics](/blog/lunar-sling-launcher-tether-dynamics/) of a sling launcher.
 
+## Trying out the trajectory sim
+
+The trajectory simulation used in this post is open source and available on [GitHub](https://github.com/rklaehn/solar-system-sim).
+
+Pre-built binaries are available on the [releases page](https://github.com/rklaehn/solar-system-sim/releases/tag/v0.1.0).
+
 ## References
 
 - Gerard K. O'Neill, *[The High Frontier: Human Colonies in Space][high-frontier]*, William Morrow and Company, 1976.

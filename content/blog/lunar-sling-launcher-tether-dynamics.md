@@ -169,6 +169,8 @@ cargo run --release
 
 You can tweak many sim parameters in the sim gui, and make more complex changes using your favourite coding LLM.
 
+Pre-built binaries are available on the [releases page](https://github.com/rklaehn/tethersim/releases/tag/v0.1.0).
+
 # Next steps
 
 We have covered the basic concept and available trajectories for a lunar sling launcher in the [previous blog post](/blog/lunar-sling-launchers/), and problems and solutions for the release dynamics in this blog post.
