@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <style>
+    .hill { fill: none; stroke: #99a; stroke-width: 2.5; stroke-linecap: round; }
+    .mass { fill: #aaa; stroke: #888; stroke-width: 1.5; }
+  </style>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="#1a1a2e"/>
+
+  <!-- Hill profile: tiny depression then true quarter-circle arc to vertical -->
+  <path class="hill" d="
+    M 50 62
+    C 57 62 62 66 70 66
+    C 78 66 83 62 90 62
+    A 210 210 0 0 1 300 272
+  "/>
+
+  <!-- Fill below the hill -->
+  <path d="
+    M 50 62
+    C 57 62 62 66 70 66
+    C 78 66 83 62 90 62
+    A 210 210 0 0 1 300 272
+    L 50 272 Z
+  " fill="#1e1e3a" opacity="0.8"/>
+
+  <!-- Force arrow pushing ball out of depression (brief flash) -->
+  <line x1="45" y1="61" x2="60" y2="61" stroke="#e74" stroke-width="2" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite"
+      values="0;0;1;0;0" keyTimes="0;0.28;0.32;0.38;1"/>
+  </line>
+  <polygon points="60,57.5 68,61 60,64.5" fill="#e74" opacity="0">
+    <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite"
+      values="0;0;1;0;0" keyTimes="0;0.28;0.32;0.38;1"/>
+  </polygon>
+
+  <!-- Ball motion path -->
+  <path id="ballpath" d="
+    M 70 61
+    C 78 61 83 57 90 57
+    A 215 215 0 0 1 305 272
+  " fill="none" stroke="none"/>
+
+  <!-- Mass ball: animate along path, then snap back via opacity swap -->
+  <!-- Rolling ball -->
+  <circle r="5" class="mass" opacity="1">
+    <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite"
+      values="1;1;1;0;0" keyTimes="0;0.78;0.8;0.82;1"/>
+    <animateMotion
+      dur="3.5s"
+      repeatCount="indefinite"
+      keyPoints="0;0;1;1"
+      keyTimes="0;0.3;0.8;1"
+      calcMode="spline"
+      keySplines="0.5 0 0.5 1; 0.0 0 1 0.7; 0.5 0 0.5 1"
+    >
+      <mpath href="#ballpath"/>
+    </animateMotion>
+    <circle cx="-1.5" cy="-1.5" r="1" fill="#ccc" opacity="0.4"/>
+  </circle>
+
+  <!-- Static ball at depression: appears after rolling ball vanishes -->
+  <circle cx="70" cy="61" r="5" class="mass" opacity="0">
+    <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite"
+      values="0;0;1;1" keyTimes="0;0.82;0.84;1"/>
+    <circle cx="-1.5" cy="-1.5" r="1" fill="#ccc" opacity="0.4"/>
+  </circle>
+</svg>
