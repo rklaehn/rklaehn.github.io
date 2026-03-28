@@ -181,4 +181,4 @@ We are going to [design](https://www.onshape.com/), [3d print](https://bambulab.
 
 The only thing that limits us for an Earth based prototype is air resistance. But **all complex topics** such as release precision and release dynamics can be tested on Earth.
 
-The next part of this series will cover the design and testing of a release mechanism.
+The next part of this series covers the design and testing of a [release mechanism](/blog/lunar-sling-launcher-release-mechanism/).
