@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <style>
+    .orbit-line { stroke: #fff; stroke-width: 1; stroke-dasharray: 5,5; fill: none; }
+    .label { font-family: sans-serif; font-size: 12px; fill: #aaa; }
+    .label-major { font-family: sans-serif; font-size: 16px; fill: #ddd; font-weight: bold; }
+    .label-dv { font-family: sans-serif; font-size: 12px; fill: #ddd; }
+    .label-cargo { font-family: sans-serif; font-size: 11px; fill: #9bc; }
+    .label-mult { font-family: sans-serif; font-size: 18px; fill: #fc8; font-weight: bold; }
+    .label-mult-cargo { font-family: sans-serif; font-size: 18px; fill: #9d9; font-weight: bold; }
+    .arrow-up { stroke: #9d9; stroke-width: 1.8; fill: none; }
+    .arrow-down { stroke: #9bc; stroke-width: 1.8; fill: none; }
+    .arrow-tanker { stroke: #fc8; stroke-width: 1.8; fill: none; }
+    .label-bubble { font-family: sans-serif; font-size: 11px; fill: #ccc; }
+    .arrow-empty { stroke: #888; stroke-width: 1.8; fill: none; stroke-dasharray: 4,3; }
+    .wait { stroke: #ccc; stroke-width: 2.5; fill: none; stroke-linecap: round; }
+  </style>
+
+  <defs>
+    <marker id="arrow-up-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9d9"/>
+    </marker>
+    <marker id="arrow-down-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9bc"/>
+    </marker>
+    <marker id="arrow-tanker-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fc8"/>
+    </marker>
+    <marker id="arrow-empty-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#888"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="#1a1a2e"/>
+
+  <!-- Stars -->
+  <g fill="#fff" opacity="0.7">
+    <circle cx="50" cy="180" r="0.6"/>
+    <circle cx="200" cy="160" r="0.8"/>
+    <circle cx="500" cy="180" r="0.5"/>
+    <circle cx="700" cy="220" r="0.7"/>
+    <circle cx="60" cy="320" r="0.4"/>
+    <circle cx="730" cy="380" r="0.5"/>
+    <circle cx="50" cy="450" r="0.6"/>
+    <circle cx="740" cy="500" r="0.4"/>
+    <circle cx="60" cy="540" r="0.5"/>
+    <circle cx="710" cy="600" r="0.6"/>
+  </g>
+
+  <!-- Moon bar (top) -->
+  <rect x="0" y="0" width="800" height="48" fill="#777" stroke="#aaa" stroke-width="0.8"/>
+  <text x="400" y="32" text-anchor="middle" class="label-major">Moon</text>
+
+  <!-- EML1 line -->
+  <line x1="60" y1="240" x2="740" y2="240" class="orbit-line"/>
+  <text x="65" y="232" class="label" style="fill: #fff">EML1</text>
+
+  <!-- LEO line -->
+  <line x1="60" y1="560" x2="740" y2="560" class="orbit-line"/>
+  <text x="65" y="552" class="label" style="fill: #fff">LEO</text>
+
+  <!-- Earth bar (bottom) -->
+  <rect x="0" y="752" width="800" height="48" fill="#2a5a8f" stroke="#aaa" stroke-width="0.8"/>
+  <text x="400" y="784" text-anchor="middle" class="label-major">Earth</text>
+
+  <!-- =================================== -->
+  <!-- NO TETHER (LunOX absent in this architecture) -->
+  <!-- =================================== -->
+
+  <!-- =================================== -->
+  <!-- 1× prop tanker (Earth → LEO → Earth), labeled ×24 -->
+  <!-- =================================== -->
+  <line x1="195" y1="752" x2="203" y2="565" class="arrow-tanker" marker-end="url(#arrow-tanker-end)"/>
+  <line x1="203" y1="560" x2="215" y2="560" class="wait"/>
+  <line x1="215" y1="560" x2="223" y2="747" class="arrow-empty" marker-end="url(#arrow-empty-end)"/>
+  <text x="209" y="540" text-anchor="middle" class="label">prop tanker</text>
+  <text x="240" y="665" class="label-mult">× 24</text>
+
+  <!-- =================================== -->
+  <!-- 1× Cargo Starship (Earth → LEO → EML1 → LEO → Earth), labeled ×3 -->
+  <!-- =================================== -->
+  <line x1="335" y1="752" x2="342" y2="560" class="arrow-up"/>
+  <line x1="342" y1="560" x2="354" y2="560" class="arrow-up"/>
+  <line x1="354" y1="560" x2="368" y2="245" class="arrow-up" marker-end="url(#arrow-up-end)"/>
+  <text x="376" y="220" text-anchor="middle" class="label">Cargo Starship</text>
+  <line x1="368" y1="240" x2="385" y2="240" class="wait"/>
+  <line x1="385" y1="240" x2="417" y2="747" class="arrow-empty" marker-end="url(#arrow-empty-end)"/>
+  <text x="450" y="665" class="label-mult-cargo">× 3</text>
+
+  <!-- =================================== -->
+  <!-- Lunar Starship round trip (EML1 ↔ Moon), permanent EML1 resident -->
+  <!-- =================================== -->
+  <line x1="595" y1="240" x2="603" y2="53" class="arrow-up" marker-end="url(#arrow-up-end)"/>
+  <line x1="618" y1="48" x2="626" y2="235" class="arrow-empty" marker-end="url(#arrow-empty-end)"/>
+  <text x="610" y="265" text-anchor="middle" class="label">Lunar Starship</text>
+
+  <!-- Δv labels at left and right margins -->
+  <text x="20" y="144" class="label-dv" text-anchor="middle" transform="rotate(-90, 20, 144)">2.5 km/s →</text>
+  <text x="20" y="400" class="label-dv" text-anchor="middle" transform="rotate(-90, 20, 400)">3.8 km/s →</text>
+  <text x="20" y="656" class="label-dv" text-anchor="middle" transform="rotate(-90, 20, 656)">~9 km/s →</text>
+
+  <text x="780" y="144" class="label-dv" text-anchor="middle" transform="rotate(90, 780, 144)">2.5 km/s →</text>
+  <text x="780" y="400" class="label-dv" text-anchor="middle" transform="rotate(90, 780, 400)">0.77 km/s + aerobraking →</text>
+  <text x="780" y="656" class="label-dv" text-anchor="middle" transform="rotate(90, 780, 656)">0.10 km/s + reentry →</text>
+
+  <!-- =================================== -->
+  <!-- Mass-fraction bubbles (per single ship/trip)                   -->
+  <!-- 8 px wide bars; scale: 30 px = 1248 t (0.024 px/t)             -->
+  <!-- LOX faded = consumed in burn, LOX solid = transferred as cargo -->
+  <!-- CH4 faded = consumed,         CH4 solid = preserved/delivered  -->
+  <!-- Payload solid (green)                                           -->
+  <!-- =================================== -->
+
+  <!-- Earth → LEO (one prop tanker) -->
+  <!-- Columns: LOX consumed (col 0), CH4 consumed (col 1), prop cargo split LOX/CH4 (col 2) -->
+  <g transform="translate(135, 641)">
+    <title>Earth → LEO  (per prop tanker, × 24)
+LOX consumed: 1218 t (vehicle ascent) · cargo to LEO: 156 t
+CH4 consumed: 344 t  (vehicle ascent) · cargo to LEO: 44 t</title>
+    <text x="18" y="-7" text-anchor="middle" class="label-bubble">prop tanker</text>
+    <rect x="-3" y="-3" width="42" height="36" fill="#222" stroke="#445" stroke-width="0.4" rx="2"/>
+    <rect x="0" y="0.77" width="8" height="29.23" fill="#8cf" opacity="0.5"/>
+    <rect x="12" y="21.74" width="8" height="8.26" fill="#fc8" opacity="0.5"/>
+    <rect x="24" y="26.26" width="8" height="3.74" fill="#8cf"/>
+    <rect x="24" y="25.20" width="8" height="1.06" fill="#fc8"/>
+  </g>
+
+  <!-- LEO → EML1 (one cargo Starship outbound, no extra CH4 needed) -->
+  <g transform="translate(245, 388)">
+    <title>LEO → EML1  (per cargo Starship, × 3)
+LOX consumed: 937 t · preserved (residual to EML1 depot): 311 t
+CH4 consumed: 264 t · preserved (residual to EML1 depot): 88 t
+Payload: 150 t</title>
+    <text x="18" y="-7" text-anchor="middle" class="label-bubble">Payload+LOX+CH4</text>
+    <rect x="-3" y="-3" width="42" height="36" fill="#222" stroke="#445" stroke-width="0.4" rx="2"/>
+    <rect x="0" y="0.05" width="8" height="22.49" fill="#8cf" opacity="0.5"/>
+    <rect x="0" y="22.54" width="8" height="7.46" fill="#8cf"/>
+    <rect x="12" y="21.56" width="8" height="6.34" fill="#fc8" opacity="0.5"/>
+    <rect x="12" y="27.90" width="8" height="2.10" fill="#fc8"/>
+    <rect x="24" y="26.40" width="8" height="3.60" fill="#8d8"/>
+  </g>
+
+  <!-- EML1 → Moon (lunar descent, one round trip) -->
+  <!-- No LunOX top-up: lunar Starship must carry ascent LOX through landing too -->
+  <g transform="translate(540, 129)">
+    <title>EML1 → Moon  (lunar descent, per round trip — no LunOX)
+LOX consumed: 465 t · preserved (ascent reserve): 67 t
+CH4 consumed: 131 t · preserved (ascent reserve): 19 t
+Payload: 450 t</title>
+    <text x="18" y="-7" text-anchor="middle" class="label-bubble">Payload+CH4</text>
+    <rect x="-3" y="-3" width="42" height="36" fill="#222" stroke="#445" stroke-width="0.4" rx="2"/>
+    <rect x="0" y="17.22" width="8" height="11.17" fill="#8cf" opacity="0.5"/>
+    <rect x="0" y="28.39" width="8" height="1.61" fill="#8cf"/>
+    <rect x="12" y="26.39" width="8" height="3.15" fill="#fc8" opacity="0.5"/>
+    <rect x="12" y="29.54" width="8" height="0.46" fill="#fc8"/>
+    <rect x="24" y="19.20" width="8" height="10.80" fill="#8d8"/>
+  </g>
+
+  <!-- Moon → EML1 (lunar ascent) -->
+  <g transform="translate(665, 129)">
+    <title>Moon → EML1  (lunar ascent, no payload — uses descent reserves)
+LOX consumed: 67 t  (carried from EML1 through landing)
+CH4 consumed: 19 t  (carried from EML1 through landing)</title>
+    <text x="18" y="-7" text-anchor="middle" class="label-bubble">Return</text>
+    <rect x="-3" y="-3" width="42" height="36" fill="#222" stroke="#445" stroke-width="0.4" rx="2"/>
+    <rect x="0" y="28.39" width="8" height="1.61" fill="#8cf" opacity="0.5"/>
+    <rect x="12" y="29.54" width="8" height="0.46" fill="#fc8" opacity="0.5"/>
+    <rect x="24" y="0" width="8" height="30" fill="none" stroke="#444" stroke-width="0.5" stroke-dasharray="1,1"/>
+  </g>
+
+  <!-- EML1 → LEO (one cargo Starship return, EMPTY — no LOX cargo) -->
+  <g transform="translate(425, 388)">
+    <title>EML1 → LEO  (per cargo Starship return, × 3)
+Empty bay — no LOX cargo (no LunOX to ferry).
+LOX consumed: 27 t  (return burn + landing reserve)
+CH4 consumed: 8 t</title>
+    <text x="18" y="-7" text-anchor="middle" class="label-bubble">Empty</text>
+    <rect x="-3" y="-3" width="42" height="36" fill="#222" stroke="#445" stroke-width="0.4" rx="2"/>
+    <rect x="0" y="29.36" width="8" height="0.64" fill="#8cf" opacity="0.5"/>
+    <rect x="12" y="29.82" width="8" height="0.18" fill="#fc8" opacity="0.5"/>
+    <rect x="24" y="0" width="8" height="30" fill="none" stroke="#444" stroke-width="0.5" stroke-dasharray="1,1"/>
+  </g>
+
+  <!-- Legend (vertical, right side past lunar Starship) -->
+  <g transform="translate(660, 595)">
+    <rect x="-8" y="-15" width="100" height="105" fill="#222" stroke="#445" stroke-width="0.5" rx="2"/>
+
+    <line x1="0" y1="0" x2="20" y2="0" stroke="#8d8" stroke-width="2.5"/>
+    <text x="26" y="4" class="label">payload</text>
+
+    <line x1="0" y1="22" x2="20" y2="22" stroke="#fc8" stroke-width="2.5"/>
+    <text x="26" y="26" class="label">CH4</text>
+
+    <line x1="0" y1="44" x2="20" y2="44" stroke="#8cf" stroke-width="2.5"/>
+    <text x="26" y="48" class="label">LOX</text>
+
+    <line x1="0" y1="66" x2="20" y2="66" stroke="#888" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="26" y="70" class="label">empty</text>
+  </g>
+</svg>

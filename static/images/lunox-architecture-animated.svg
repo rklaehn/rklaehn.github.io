@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 800">
+  <style>
+    .orbit-line { stroke: #556; stroke-width: 1; stroke-dasharray: 5,5; fill: none; }
+    .label { font-family: sans-serif; font-size: 11px; fill: #aaa; }
+    .label-major { font-family: sans-serif; font-size: 14px; fill: #ddd; font-weight: bold; }
+    .label-dv { font-family: sans-serif; font-size: 10px; fill: #d96; }
+    .label-cargo { font-family: sans-serif; font-size: 10px; fill: #9bc; }
+    .lox { fill: #8cf; }
+    .ch4 { fill: #fc8; }
+    .payload { fill: #8d8; }
+    .route { stroke: #556; stroke-width: 0.6; stroke-dasharray: 2,3; fill: none; }
+  </style>
+
+  <!-- Background -->
+  <rect width="700" height="800" fill="#1a1a2e"/>
+
+  <!-- Stars -->
+  <g fill="#fff" opacity="0.7">
+    <circle cx="50" cy="180" r="0.6"/>
+    <circle cx="150" cy="140" r="0.8"/>
+    <circle cx="500" cy="155" r="0.5"/>
+    <circle cx="620" cy="220" r="0.7"/>
+    <circle cx="80" cy="300" r="0.4"/>
+    <circle cx="600" cy="380" r="0.5"/>
+    <circle cx="50" cy="440" r="0.6"/>
+    <circle cx="640" cy="490" r="0.4"/>
+    <circle cx="60" cy="540" r="0.5"/>
+    <circle cx="610" cy="590" r="0.6"/>
+  </g>
+
+  <!-- Clip the Moon and Earth circles to the viewBox naturally -->
+  <!-- Moon horizon (top) - large circle with center far above -->
+  <g>
+    <circle cx="350" cy="-1900" r="2000" fill="#777" stroke="#aaa" stroke-width="0.8"/>
+    <!-- Crater details on visible portion -->
+    <circle cx="220" cy="85" r="6" fill="#5a5a5a" opacity="0.6"/>
+    <circle cx="280" cy="65" r="4" fill="#5a5a5a" opacity="0.5"/>
+    <circle cx="420" cy="80" r="7" fill="#5a5a5a" opacity="0.6"/>
+    <circle cx="500" cy="60" r="3" fill="#5a5a5a" opacity="0.5"/>
+    <circle cx="350" cy="95" r="5" fill="#5a5a5a" opacity="0.5"/>
+    <text x="350" y="35" text-anchor="middle" class="label-major">Moon</text>
+  </g>
+
+  <!-- Tether at Moon (anchored at lunar surface, rotating) -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 350 100; 360 350 100" dur="6s" repeatCount="indefinite"/>
+    <line x1="350" y1="100" x2="430" y2="100" stroke="#aaa" stroke-width="0.8"/>
+    <circle cx="430" cy="100" r="3" class="lox"/>
+  </g>
+
+  <!-- LunOX delivery curve: Moon → EML1 -->
+  <path d="M 410 130 Q 480 200 460 240" class="route" stroke="#8cf" stroke-dasharray="3,3"/>
+  <text x="490" y="195" class="label-cargo">LunOX</text>
+
+  <!-- EML1 line + depot -->
+  <line x1="60" y1="240" x2="640" y2="240" class="orbit-line"/>
+  <text x="65" y="232" class="label">EML1</text>
+  <rect x="310" y="232" width="80" height="16" fill="#444" stroke="#aaa" stroke-width="0.6" rx="2"/>
+  <circle cx="322" cy="240" r="2.5" class="lox"/>
+  <circle cx="332" cy="240" r="2.5" class="lox"/>
+  <circle cx="342" cy="240" r="2.5" class="lox"/>
+  <circle cx="358" cy="240" r="2.5" class="ch4"/>
+  <circle cx="368" cy="240" r="2.5" class="ch4"/>
+  <circle cx="378" cy="240" r="2.5" class="payload"/>
+  <text x="395" y="244" class="label">EML1 depot</text>
+
+  <!-- LEO line + depot -->
+  <line x1="60" y1="580" x2="640" y2="580" class="orbit-line"/>
+  <text x="65" y="572" class="label">LEO</text>
+  <rect x="310" y="572" width="80" height="16" fill="#444" stroke="#aaa" stroke-width="0.6" rx="2"/>
+  <circle cx="322" cy="580" r="2.5" class="lox"/>
+  <circle cx="332" cy="580" r="2.5" class="lox"/>
+  <circle cx="342" cy="580" r="2.5" class="lox"/>
+  <circle cx="358" cy="580" r="2.5" class="lox"/>
+  <circle cx="368" cy="580" r="2.5" class="ch4"/>
+  <circle cx="378" cy="580" r="2.5" class="ch4"/>
+  <text x="395" y="584" class="label">LEO depot</text>
+
+  <!-- Earth horizon (bottom) - large circle with center far below -->
+  <g>
+    <circle cx="350" cy="1800" r="1100" fill="#2a5a8f" stroke="#aaa" stroke-width="0.8"/>
+    <!-- Subtle continents on visible curve -->
+    <ellipse cx="220" cy="725" rx="40" ry="6" fill="#4a8" opacity="0.5"/>
+    <ellipse cx="380" cy="710" rx="55" ry="6" fill="#4a8" opacity="0.5"/>
+    <ellipse cx="510" cy="730" rx="35" ry="5" fill="#4a8" opacity="0.4"/>
+    <ellipse cx="290" cy="745" rx="30" ry="5" fill="#4a8" opacity="0.4"/>
+    <text x="350" y="785" text-anchor="middle" class="label-major">Earth</text>
+  </g>
+
+  <!-- Δv labels on routes -->
+  <text x="80" y="660" class="label-dv">~9 km/s</text>
+  <text x="80" y="412" class="label-dv">3.8 km/s</text>
+  <text x="80" y="170" class="label-dv">2.5 km/s</text>
+
+  <!-- Route arrows (faint guides) -->
+  <line x1="200" y1="650" x2="200" y2="595" class="route"/>
+  <line x1="280" y1="565" x2="280" y2="255" class="route"/>
+  <line x1="320" y1="565" x2="320" y2="255" class="route"/>
+  <line x1="500" y1="225" x2="500" y2="155" class="route"/>
+
+  <!-- CH4 tanker: Earth → LEO -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+      values="200 670; 200 595; 200 595; 200 670; 200 670"
+      keyTimes="0; 0.35; 0.5; 0.85; 1" dur="9s" repeatCount="indefinite"/>
+    <rect x="-5" y="-15" width="10" height="20" fill="#888" stroke="#aaa" stroke-width="0.5" rx="1"/>
+    <polygon points="-5,-15 0,-22 5,-15" fill="#aaa"/>
+    <rect x="-6" y="3" width="1.5" height="6" fill="#777"/>
+    <rect x="4.5" y="3" width="1.5" height="6" fill="#777"/>
+    <circle cx="0" cy="-5" r="2.5" class="ch4"/>
+  </g>
+  <text x="200" y="555" text-anchor="middle" class="label">CH4 tanker</text>
+
+  <!-- Cargo Starship outbound: LEO → EML1 (with payload + CH4) -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+      values="280 565; 280 255; 320 255; 320 565; 280 565"
+      keyTimes="0; 0.4; 0.5; 0.9; 1" dur="14s" repeatCount="indefinite"/>
+    <rect x="-6" y="-18" width="12" height="24" fill="#999" stroke="#bbb" stroke-width="0.5" rx="1"/>
+    <polygon points="-6,-18 0,-26 6,-18" fill="#bbb"/>
+    <rect x="-7" y="4" width="2" height="7" fill="#777"/>
+    <rect x="5" y="4" width="2" height="7" fill="#777"/>
+    <circle cx="0" cy="-8" r="2.5" class="payload">
+      <animate attributeName="fill"
+        values="#8d8;#8d8;#8cf;#8cf;#8d8"
+        keyTimes="0;0.45;0.5;0.9;1" dur="14s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="-2" r="2.5" class="ch4">
+      <animate attributeName="fill"
+        values="#fc8;#fc8;#8cf;#8cf;#fc8"
+        keyTimes="0;0.45;0.5;0.9;1" dur="14s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <text x="300" y="600" text-anchor="middle" class="label">Cargo Starship</text>
+  <text x="245" y="412" text-anchor="end" class="label-cargo">payload + CH4 ↑</text>
+  <text x="355" y="412" text-anchor="start" class="label-cargo">↓ LOX</text>
+
+  <!-- Lunar Starship: EML1 → Moon → EML1 -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+      values="500 225; 500 155; 500 155; 500 225; 500 225"
+      keyTimes="0; 0.4; 0.5; 0.9; 1" dur="10s" repeatCount="indefinite"/>
+    <rect x="-7" y="-20" width="14" height="26" fill="#dca" stroke="#fed" stroke-width="0.5" rx="1"/>
+    <polygon points="-7,-20 0,-28 7,-20" fill="#fed"/>
+    <rect x="-8" y="4" width="2" height="8" fill="#a86"/>
+    <rect x="6" y="4" width="2" height="8" fill="#a86"/>
+    <circle cx="0" cy="-10" r="3" class="payload">
+      <animate attributeName="opacity"
+        values="1;1;0;0;1"
+        keyTimes="0;0.45;0.5;0.9;1" dur="10s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="-2" r="2.5" class="ch4"/>
+  </g>
+  <text x="555" y="190" text-anchor="start" class="label">Lunar Starship</text>
+
+  <!-- Legend -->
+  <g transform="translate(540, 720)">
+    <rect x="-10" y="-50" width="120" height="60" fill="#222" stroke="#445" stroke-width="0.5" rx="2"/>
+    <circle cx="0" cy="-38" r="3" class="payload"/>
+    <text x="8" y="-34" class="label">payload</text>
+    <circle cx="0" cy="-22" r="3" class="ch4"/>
+    <text x="8" y="-18" class="label">CH4 (Earth)</text>
+    <circle cx="0" cy="-6" r="3" class="lox"/>
+    <text x="8" y="-2" class="label">LOX (LunOX)</text>
+  </g>
+</svg>
