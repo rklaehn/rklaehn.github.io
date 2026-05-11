@@ -26,7 +26,7 @@ Both Starship and [other promising cislunar transportation systems][blue-moon] r
 
 So while CH4 is hard to produce on the Moon, let's see how far we get by just using lunar oxygen and the tether LOX pipeline to EML1.
 
-The current *public* plans for lunar Starship are surprisingly vague, but what is known is that there will be a lunar Starship variant without the capability to reenter the Earth atmosphere. It is also known that there will be one or possibly two propellant depots involved, one in [LEO][leo-wiki] and one closer to the Moon.
+The current *public* plans for lunar Starship are surprisingly vague, but what is known is that there will be a lunar Starship variant without the capability to reenter the Earth atmosphere. It is also known that there will be one or possibly two refuelings involved, one in [LEO][leo-wiki] and one closer to the Moon.
 
 Starting with these building blocks and taking advantage of cheap EML1 LOX in every possible way, we end up with the following architecture:
 
@@ -60,15 +60,15 @@ After unloading the payload and refilling with LOX corresponding to the excess C
 </figure>
 
 
-The end result is very promising. The exact numbers will vary depending on exact Starship capabilities. But the end result is a *large* reduction of the number of tanker flights needed to get a very substantial payload to the Moon.
+The end result is very promising. The exact numbers will vary depending on exact Starship capabilities. But there is a *large* reduction of the number of tanker flights needed to get a very substantial payload to the Moon.
 
 # Launch windows
 
-From Earth to the LEO depot you have one or two almost instantaneous launch windows per day, more if some orbit phasing is acceptable.
+From Earth to the LEO depot you have one or two almost instantaneous launch windows *per day*.
 
-From LEO to EML1 and back you have two pretty wide launch windows when the LEO depot orbit crosses the lunar orbital plane.
+From LEO to EML1 and back you have two pretty wide launch windows *per month* when the LEO depot orbit crosses the lunar orbital plane.
 
-From EML1 to the Moon and back you can start at any time with some minor delta-v variations.
+From the Moon to EML1 and back you can start at any time with some minor delta-v variations.
 
 <figure>
 <p align="center">
