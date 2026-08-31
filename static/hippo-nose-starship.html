@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hinged Nose Starship — Concept Model</title>
+<style>
+  :root{
+    --bg:#070b13;
+    --panel:rgba(14,19,28,0.82);
+    --hair:rgba(150,168,190,0.18);
+    --steel:#c4c9d2;
+    --dim:#79828f;
+    --txt:#d8dde4;
+    --amber:#ff7e29;
+    --amber-soft:rgba(255,126,41,0.16);
+    --cryo:#5fd0e0;
+    --ring:#6e90b4;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --disp:"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:var(--mono)}
+  #stage{position:fixed;inset:0}
+  canvas{display:block}
+
+  /* ---- title ---- */
+  #title{position:fixed;top:18px;left:20px;z-index:5;pointer-events:none}
+  #title .eyebrow{font-size:10px;letter-spacing:.42em;color:var(--amber);text-transform:uppercase;margin-bottom:6px}
+  #title h1{font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-.01em;line-height:1.02;text-transform:uppercase}
+  #title h1 span{display:block;color:var(--dim);font-weight:400;font-size:11px;letter-spacing:.16em;margin-top:5px}
+
+  /* ---- control panel ---- */
+  #panel{position:fixed;left:20px;bottom:20px;z-index:6;width:268px;max-width:calc(100vw - 40px);
+    background:var(--panel);border:1px solid var(--hair);border-radius:3px;
+    backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+  #panel .hd{display:flex;justify-content:space-between;align-items:baseline;
+    padding:11px 14px;border-bottom:1px solid var(--hair)}
+  #panel .hd b{font-family:var(--disp);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+  #panel .hd em{font-style:normal;font-size:10px;color:var(--amber);letter-spacing:.1em}
+  #panel .body{padding:13px 14px 15px}
+
+  .bigbtn{width:100%;border:1px solid var(--amber);background:var(--amber-soft);color:var(--amber);
+    font-family:var(--disp);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:12px;
+    padding:11px;border-radius:2px;cursor:pointer;transition:background .18s,color .18s}
+  .bigbtn:hover{background:var(--amber);color:#0a0e16}
+  .bigbtn:active{transform:translateY(1px)}
+
+  .slrow{margin-top:14px}
+  .sllabel{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;color:var(--dim);margin-bottom:6px;text-transform:uppercase}
+  .sllabel b{color:var(--txt);font-weight:500}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:2px;background:var(--hair);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+    background:var(--amber);cursor:pointer;border:2px solid #0a0e16}
+  input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--amber);cursor:pointer;border:2px solid #0a0e16}
+
+  .toggles{margin-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .tg{display:flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.04em;color:var(--dim);
+    cursor:pointer;user-select:none;padding:5px 0;text-transform:uppercase}
+  .tg .box{width:13px;height:13px;border:1px solid var(--hair);border-radius:2px;flex:0 0 auto;position:relative;transition:.15s}
+  .tg.on .box{background:var(--amber);border-color:var(--amber)}
+  .tg.on .box::after{content:"";position:absolute;inset:3px;background:#0a0e16}
+  .tg.on{color:var(--txt)}
+
+  .foot{margin-top:14px;padding-top:11px;border-top:1px solid var(--hair);
+    display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--dim)}
+  .foot button{background:none;border:1px solid var(--hair);color:var(--dim);font-family:var(--mono);
+    font-size:9.5px;letter-spacing:.1em;padding:5px 9px;border-radius:2px;cursor:pointer;text-transform:uppercase}
+  .foot button:hover{border-color:var(--steel);color:var(--txt)}
+
+  /* ---- 3D labels ---- */
+  .lbl{position:fixed;z-index:4;pointer-events:none;font-size:10px;letter-spacing:.06em;
+    white-space:nowrap;transform:translate(-50%,-50%);transition:opacity .2s}
+  .lbl .tag{display:inline-block;padding:2px 6px;border-radius:2px;background:rgba(8,12,20,.78);
+    border:1px solid var(--hair)}
+  .lbl.amber .tag{border-color:rgba(255,126,41,.5);color:var(--amber)}
+  .lbl.cryo  .tag{border-color:rgba(95,208,224,.5);color:var(--cryo)}
+  .lbl.steel .tag{border-color:rgba(150,168,190,.4);color:var(--steel)}
+  .lbl .dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:5px;vertical-align:middle;background:currentColor}
+
+  /* ---- hint ---- */
+  #hint{position:fixed;top:18px;right:20px;z-index:5;text-align:right;font-size:9.5px;
+    letter-spacing:.1em;color:var(--dim);text-transform:uppercase;line-height:1.8;pointer-events:none}
+  #hint b{color:var(--steel);font-weight:500}
+
+  @media (max-width:560px){
+    #title h1{font-size:18px}
+    #hint{display:none}
+    #panel{left:12px;right:12px;bottom:12px;width:auto}
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+
+<div id="title">
+  <div class="eyebrow">Concept Study · Reentry Vehicle</div>
+  <h1>Hinged-Nose Starship<span>Leeward clamshell · full-aperture payload access</span></h1>
+</div>
+
+<div id="hint">
+  <div><b>Drag</b> to orbit</div>
+  <div><b>Scroll</b> to zoom</div>
+</div>
+
+<div id="panel">
+  <div class="hd"><b>Nose Articulation</b><em id="stateLbl">— closed —</em></div>
+  <div class="body">
+    <button class="bigbtn" id="toggleBtn">Open Nose</button>
+    <div class="slrow">
+      <div class="sllabel"><span>Hinge angle</span><b id="angVal">0°</b></div>
+      <input type="range" id="angSlider" min="0" max="112" value="0" />
+    </div>
+    <div class="toggles">
+      <div class="tg on" data-k="tiles"><span class="box"></span>Heat shield</div>
+      <div class="tg" data-k="labels"><span class="box"></span>Callouts</div>
+      <div class="tg" data-k="xray"><span class="box"></span>X-ray</div>
+      <div class="tg on" data-k="payload"><span class="box"></span>Payload</div>
+      <div class="tg" data-k="spin"><span class="box"></span>Auto-spin</div>
+    </div>
+    <div class="foot">
+      <span id="readout">windward seam: sealed</span>
+      <button id="resetBtn">Reset view</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  if(!window.THREE){document.getElementById('readout').textContent='three.js failed to load';return;}
+
+  // ---------- vehicle dimensions (stylized, ~9 m class) ----------
+  const R = 4.5;            // body radius
+  const BARREL_H = 27;      // barrel height (y: 0 .. 27)
+  const PART_Y = BARREL_H;  // parting plane height
+  const NOSE_L = 13;        // nose length
+  const WIND_CENTER = Math.PI*1.5;          // windward direction = -X  (x = r·sin θ, min at 3π/2)
+  const WIND_ARC = Math.PI*1.12;            // heat shield wraps ~202°
+  const WIND_START = WIND_CENTER - WIND_ARC/2;
+  const OPEN_MAX = THREE.MathUtils.degToRad(112);
+
+  // ---------- scene ----------
+  const stage = document.getElementById('stage');
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('#070b13');
+  scene.fog = new THREE.Fog('#070b13', 120, 320);
+
+  const camera = new THREE.PerspectiveCamera(48, innerWidth/innerHeight, 0.1, 2000);
+  const renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+
+  // ---------- lighting ----------
+  scene.add(new THREE.HemisphereLight('#9fb2cc','#10131a',1.1));
+  const key = new THREE.DirectionalLight('#fff4e8',1.45);
+  key.position.set(40,55,38); scene.add(key);
+  const rim = new THREE.DirectionalLight('#6f86ff',0.6);
+  rim.position.set(-45,20,-30); scene.add(rim);
+  // warm uplight to suggest reentry plasma glancing the windward side
+  const plasma = new THREE.PointLight('#ff7e29',0.5,160);
+  plasma.position.set(-30,6,0); scene.add(plasma);
+
+  // ---------- starfield ----------
+  (function stars(){
+    const g=new THREE.BufferGeometry(), n=1400, p=new Float32Array(n*3);
+    for(let i=0;i<n;i++){
+      const r=380+Math.random()*220, t=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+      p[i*3]=r*Math.sin(ph)*Math.cos(t); p[i*3+1]=r*Math.cos(ph); p[i*3+2]=r*Math.sin(ph)*Math.sin(t);
+    }
+    g.setAttribute('position',new THREE.BufferAttribute(p,3));
+    scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:'#aab6cc',size:1.1,sizeAttenuation:false,transparent:true,opacity:.8})));
+  })();
+
+  // ---------- materials ----------
+  const steelMat = new THREE.MeshStandardMaterial({color:'#e8ecf1',metalness:.66,roughness:.32,side:THREE.DoubleSide});
+  const steelCapMat = steelMat.clone();
+  const ringMat  = new THREE.MeshStandardMaterial({color:'#6e90b4',metalness:.85,roughness:.4});
+  const seamMat  = new THREE.MeshStandardMaterial({color:'#ff7e29',emissive:'#ff5a00',emissiveIntensity:.9,metalness:.3,roughness:.5});
+  const loxMat   = new THREE.MeshStandardMaterial({color:'#cfeef4',metalness:.4,roughness:.25,emissive:'#1d6f7c',emissiveIntensity:.35,side:THREE.DoubleSide});
+  const deckMat  = new THREE.MeshStandardMaterial({color:'#3a4150',metalness:.6,roughness:.6,side:THREE.DoubleSide});
+  const qdMat    = new THREE.MeshStandardMaterial({color:'#5fd0e0',emissive:'#0d6675',emissiveIntensity:.5,metalness:.6,roughness:.4});
+  const payBody  = new THREE.MeshStandardMaterial({color:'#8b929e',metalness:.7,roughness:.45});
+  const payPanel = new THREE.MeshStandardMaterial({color:'#1c3a66',metalness:.4,roughness:.5,emissive:'#0a1830',emissiveIntensity:.4,side:THREE.DoubleSide});
+
+  // procedural heat-shield tile texture
+  const tileTex = (function(){
+    const s=256,c=document.createElement('canvas');c.width=c.height=s;const x=c.getContext('2d');
+    x.fillStyle='#32353a';x.fillRect(0,0,s,s);
+    const n=8,gap=2,cell=s/n;
+    for(let i=0;i<n;i++)for(let j=0;j<n;j++){
+      const v=86+Math.floor(Math.random()*16);
+      x.fillStyle='rgb('+v+','+v+','+(v+3)+')';
+      x.fillRect(i*cell+gap/2,j*cell+gap/2,cell-gap,cell-gap);
+    }
+    const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;
+  })();
+  const tileMat = new THREE.MeshStandardMaterial({color:'#4c4f56',map:tileTex,metalness:.12,roughness:.86,side:THREE.DoubleSide});
+  const tileCapMat = tileMat.clone(); tileCapMat.map=tileTex;
+
+  // ---------- profiles ----------
+  function ogive(R,L,seg){
+    const rho=(R*R+L*L)/(2*R), pts=[];
+    for(let i=0;i<=seg;i++){const y=L*i/seg; pts.push(new THREE.Vector2(Math.max(Math.sqrt(rho*rho-y*y)+R-rho,0.001),y));}
+    return pts;
+  }
+  const noseProfile = ogive(R,NOSE_L,40);
+
+  // hex-tile lattice (shared by barrel, seam and the climbing nose rows)
+  const seamHexR = R + 0.043, HEX_R = 0.12, HEX_N = 76;     // ~0.2 m lattice pitch, ~flush with the shield
+  const HEX_DRAW = HEX_R*0.935;                            // tiles drawn slightly under-size → narrow gaps
+  const capRowY = PART_Y + HEX_R*0.5;                       // cap seam row: ~1/4 of each tile overhangs the seam
+  const barRowY = capRowY - 1.5*HEX_R;                      // barrel row nests one honeycomb step lower
+  const RHO_N = (R*R+NOSE_L*NOSE_L)/(2*R);                  // ogive radius helper
+  const noseRad = yy => Math.sqrt(RHO_N*RHO_N - yy*yy) + R - RHO_N;
+  const NOSE_ROWS = 60;                                     // constant-count rows climb ~70% of the nose, then the smooth tip takes over
+
+  // the continuous nose shield must start just above the climbing rows — find that height
+  let _ny = capRowY - PART_Y;
+  for(let r=1;r<=NOSE_ROWS;r++){ _ny += 1.5*HEX_R*(noseRad(_ny)/R); }
+  const TIP_TILE_Y0 = _ny + 0.05;
+  const noseProfileTile = (function(){
+    const R0=R*1.014, rho=(R0*R0+NOSE_L*NOSE_L)/(2*R0), pts=[], seg=40;
+    for(let i=0;i<=seg;i++){ const yy=TIP_TILE_Y0+(NOSE_L-TIP_TILE_Y0)*i/seg;
+      pts.push(new THREE.Vector2(Math.max(Math.sqrt(rho*rho-yy*yy)+R0-rho,0.001), yy)); }
+    return pts;
+  })();
+
+  // ---------- barrel (static) ----------
+  const SEAM_GAP = 0.03;    // steel barrel top sits just below the parting plane → thin visible seam line
+  const barrel = new THREE.Mesh(new THREE.CylinderGeometry(R,R,BARREL_H-SEAM_GAP,72,1,true), steelMat);
+  barrel.position.y=(BARREL_H-SEAM_GAP)/2; scene.add(barrel);
+  // windward barrel is fully hex-tiled below (no continuous shield)
+  tileTex.repeat.set(10,18);
+
+  // engine skirt hint
+  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(R,R*0.97,1.4,72,1,true), steelMat);
+  skirt.position.y=0.7; scene.add(skirt);
+
+  // stiffening ring at the latch plane, slim (~20 cm) and tucked just inside the skin
+  const reinf = new THREE.Mesh(new THREE.TorusGeometry(R-0.2,0.1,14,90), ringMat);
+  reinf.rotation.x=Math.PI/2; reinf.position.y=PART_Y; scene.add(reinf);
+
+  // seam highlight — a flush thin line on the skin at the parting plane
+  const seam = new THREE.Mesh(new THREE.TorusGeometry(R-0.05,0.045,12,100), seamMat);
+  seam.rotation.x=Math.PI/2; seam.position.y=PART_Y; scene.add(seam);
+
+  // bay deck (floor of a long payload section, well down the barrel)
+  const deck = new THREE.Mesh(new THREE.CircleGeometry(R-0.25,64), deckMat);
+  deck.rotation.x=-Math.PI/2; deck.position.y=9; scene.add(deck);
+
+  // payload: an open telescope tube with an angled aperture, sitting low in the bay
+  const payload = new THREE.Group();
+  const TUBE_R=3.0, TUBE_H=19, TUBE_BOT=9, TUBE_SLOPE=0.4;
+  const tubeMat=new THREE.MeshStandardMaterial({color:'#8b929e',metalness:.7,roughness:.45,side:THREE.DoubleSide});
+  const tubeGeo=new THREE.CylinderGeometry(TUBE_R,TUBE_R,TUBE_H,48,1,true);
+  const tp=tubeGeo.attributes.position;                 // slice top rim on an inclined plane → oblique aperture
+  for(let i=0;i<tp.count;i++){ if(tp.getY(i)>TUBE_H/2-1e-3) tp.setY(i, TUBE_H/2 + TUBE_SLOPE*tp.getX(i)); }
+  tubeGeo.computeVertexNormals();
+  const tube=new THREE.Mesh(tubeGeo, tubeMat);
+  tube.position.y=TUBE_BOT+TUBE_H/2; payload.add(tube);
+  const cell=new THREE.Mesh(new THREE.CircleGeometry(TUBE_R-0.05,48),                  // mirror cell at the base
+    new THREE.MeshStandardMaterial({color:'#1f232b',metalness:.5,roughness:.7,side:THREE.DoubleSide}));
+  cell.rotation.x=-Math.PI/2; cell.position.y=TUBE_BOT+0.5; payload.add(cell);
+  scene.add(payload);
+
+  // (parting-ring latches are created below, in the nose-assembly section)
+
+  // ---------- hinged nose assembly ----------
+  // Hinge axis is ON the skin at the leeward edge — that side runs cool and bare, so the
+  // hinge is allowed to stand a little proud. The windward heat-shield side stays clean.
+  const HINGE_X = R;
+  const pivot = new THREE.Group();
+  pivot.position.set(HINGE_X,PART_Y,0); scene.add(pivot);
+
+  const capSteel = new THREE.Mesh(new THREE.LatheGeometry(noseProfile,72), steelCapMat);
+  capSteel.position.set(-HINGE_X,-0.01,0); pivot.add(capSteel);   // base centred on the body axis, ~3mm overlap
+
+  const capTiles = new THREE.Mesh(new THREE.LatheGeometry(noseProfileTile,72,WIND_START,WIND_ARC), tileCapMat);
+  capTiles.position.set(-HINGE_X,-0.01,0); pivot.add(capTiles);
+
+  // hex tiles bridging the windward seam: attached to the cap, standing proud, with their
+  // lower halves overhanging the parting plane onto the barrel (steel parting line stays straight).
+  // ---- seam hex tiles: cap row + interleaving barrel row (honeycomb across the straight steel cut) ----
+  function seamHex(th, half){                               // half: 0 full, +1 right, -1 left
+    const radialOut=new THREE.Vector3(Math.sin(th),0,Math.cos(th));
+    const tangN=new THREE.Vector3(Math.cos(th),0,-Math.sin(th)).negate();
+    const axial=new THREE.Vector3(0,1,0);
+    let mesh;
+    if(half===0){
+      mesh=new THREE.Mesh(new THREE.CylinderGeometry(HEX_DRAW,HEX_DRAW,0.04,6), tileMat);
+      mesh.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(tangN,radialOut,axial));
+    }else{
+      const h=HEX_DRAW, w=HEX_DRAW*Math.sqrt(3)/2, sh=new THREE.Shape();
+      if(half>0){ sh.moveTo(0,h); sh.lineTo(w,h/2); sh.lineTo(w,-h/2); sh.lineTo(0,-h); }
+      else      { sh.moveTo(0,h); sh.lineTo(0,-h); sh.lineTo(-w,-h/2); sh.lineTo(-w,h/2); }
+      sh.closePath();
+      const g=new THREE.ExtrudeGeometry(sh,{depth:0.04,bevelEnabled:false}); g.translate(0,0,-0.02);
+      mesh=new THREE.Mesh(g, tileMat);
+      mesh.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(tangN,axial,new THREE.Vector3().crossVectors(tangN,axial)));
+    }
+    mesh.userData.x = seamHexR*Math.sin(th); mesh.userData.z = seamHexR*Math.cos(th);
+    return mesh;
+  }
+  // cap seam row (flush) — rides with the cap, lower quarter overhangs the seam gap
+  const capSeamRow = new THREE.Group(); pivot.add(capSeamRow);
+  for(let i=0;i<HEX_N;i++){
+    const m=seamHex(WIND_START + WIND_ARC*(i+0.5)/HEX_N, 0);
+    m.position.set(m.userData.x-HINGE_X, capRowY-PART_Y, m.userData.z); capSeamRow.add(m);
+  }
+  // brick-bond uses a right-half hexagon; left-edge tiles are the same geometry spun 180° about the surface normal
+  const halfShape=new THREE.Shape();
+  { const h=HEX_DRAW, w=HEX_DRAW*Math.sqrt(3)/2;
+    halfShape.moveTo(0,h); halfShape.lineTo(w,h/2); halfShape.lineTo(w,-h/2); halfShape.lineTo(0,-h); halfShape.closePath(); }
+  const halfHexGeo=new THREE.ExtrudeGeometry(halfShape,{depth:0.04,bevelEnabled:false}); halfHexGeo.translate(0,0,-0.02);
+  const FLIP=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1), Math.PI);
+
+  // climbing nose rows — NOSE_ROWS rows above the cap seam row, shrinking with the ogive, riding with the cap.
+  // Rows alternate flush/offset (brick bond); offset rows carry a half tile at each arc end to keep the edge straight.
+  const noseHexMesh  = new THREE.InstancedMesh(new THREE.CylinderGeometry(HEX_DRAW,HEX_DRAW,0.04,6), tileMat, NOSE_ROWS*HEX_N);
+  const noseHalfMesh = new THREE.InstancedMesh(halfHexGeo, tileMat, NOSE_ROWS*2);
+  {
+    const M=new THREE.Matrix4(), q=new THREE.Quaternion(), p=new THREE.Vector3(), s=new THREE.Vector3(), B=new THREE.Matrix4(), t=new THREE.Vector3();
+    let idx=0, hdx=0, y=capRowY;
+    for(let r=1;r<=NOSE_ROWS;r++){
+      y += 1.5*HEX_R*(noseRad(y-PART_Y)/R);                 // step up by the local (shrinking) row height
+      const yy=y-PART_Y, rad=noseRad(yy), f=rad/R;          // local radius + shrink factor
+      const drdy=-yy/Math.sqrt(RHO_N*RHO_N-yy*yy);          // ogive slope → surface normal tilt
+      const rt=rad+0.043*f, offset=(r%2===1);               // r=1 offsets against the flush cap row
+      const full=th=>{
+        const tangN=new THREE.Vector3(Math.cos(th),0,-Math.sin(th)).negate();
+        const normal=new THREE.Vector3(Math.sin(th),-drdy,Math.cos(th)).normalize();
+        B.makeBasis(tangN, normal, t.crossVectors(tangN,normal)); q.setFromRotationMatrix(B);
+        p.set(rt*Math.sin(th)-HINGE_X, yy, rt*Math.cos(th)); s.set(f,1,f);
+        noseHexMesh.setMatrixAt(idx++, M.compose(p,q,s));
+      };
+      const half=(th,flip)=>{
+        const tangN=new THREE.Vector3(Math.cos(th),0,-Math.sin(th)).negate();
+        const normal=new THREE.Vector3(Math.sin(th),-drdy,Math.cos(th)).normalize();
+        const up=new THREE.Vector3().crossVectors(normal,tangN);
+        q.setFromRotationMatrix(B.makeBasis(tangN,up,normal)); if(flip) q.multiply(FLIP);
+        p.set(rt*Math.sin(th)-HINGE_X, yy, rt*Math.cos(th)); s.set(f,f,1);
+        noseHalfMesh.setMatrixAt(hdx++, M.compose(p,q,s));
+      };
+      if(offset){
+        for(let i=1;i<HEX_N;i++) full(WIND_START + WIND_ARC*i/HEX_N);
+        half(WIND_START,true); half(WIND_START+WIND_ARC,false);
+      }else{
+        for(let i=0;i<HEX_N;i++) full(WIND_START + WIND_ARC*(i+0.5)/HEX_N);
+      }
+    }
+    noseHexMesh.count=idx;  noseHexMesh.instanceMatrix.needsUpdate=true;
+    noseHalfMesh.count=hdx; noseHalfMesh.instanceMatrix.needsUpdate=true;
+  }
+  pivot.add(noseHexMesh); pivot.add(noseHalfMesh);
+
+  // full hex tiling of the windward barrel (replaces the continuous shield), instanced for speed.
+  // Rows alternate flush/offset; row 0 offsets against the flush cap row. Offset rows get end half tiles.
+  const rowH = 1.5*HEX_R, topY = barRowY, botY = 1.5;
+  const numRows = Math.floor((topY-botY)/rowH)+1;
+  const barrelHexMesh  = new THREE.InstancedMesh(new THREE.CylinderGeometry(HEX_DRAW,HEX_DRAW,0.04,6), tileMat, numRows*HEX_N);
+  const barrelHalfMesh = new THREE.InstancedMesh(halfHexGeo, tileMat, numRows*2);
+  {
+    const M=new THREE.Matrix4(), q=new THREE.Quaternion(), p=new THREE.Vector3(), s=new THREE.Vector3(1,1,1), B=new THREE.Matrix4();
+    const tangNf=th=>new THREE.Vector3(Math.cos(th),0,-Math.sin(th)).negate();
+    const radial=th=>new THREE.Vector3(Math.sin(th),0,Math.cos(th));
+    let idx=0, hdx=0;
+    for(let r=0;r<numRows;r++){
+      const y = topY - r*rowH, offset=(r%2===0);
+      const full=th=>{
+        B.makeBasis(tangNf(th), radial(th), new THREE.Vector3(0,1,0)); q.setFromRotationMatrix(B);
+        p.set(seamHexR*Math.sin(th), y, seamHexR*Math.cos(th));
+        barrelHexMesh.setMatrixAt(idx++, M.compose(p,q,s));
+      };
+      const half=(th,flip)=>{
+        const tangN=tangNf(th), normal=radial(th);
+        const up=new THREE.Vector3().crossVectors(normal,tangN);
+        q.setFromRotationMatrix(B.makeBasis(tangN,up,normal)); if(flip) q.multiply(FLIP);
+        p.set(seamHexR*Math.sin(th), y, seamHexR*Math.cos(th));
+        barrelHalfMesh.setMatrixAt(hdx++, M.compose(p,q,s));
+      };
+      if(offset){
+        for(let i=1;i<HEX_N;i++) full(WIND_START + WIND_ARC*i/HEX_N);
+        half(WIND_START,true); half(WIND_START+WIND_ARC,false);
+      }else{
+        for(let i=0;i<HEX_N;i++) full(WIND_START + WIND_ARC*(i+0.5)/HEX_N);
+      }
+    }
+    barrelHexMesh.count=idx;  barrelHexMesh.instanceMatrix.needsUpdate=true;
+    barrelHalfMesh.count=hdx; barrelHalfMesh.instanceMatrix.needsUpdate=true;
+  }
+  scene.add(barrelHexMesh); scene.add(barrelHalfMesh);
+
+  // LOX header tank — structural: it shares the nose skin and is closed by a domed bulkhead
+  // whose rim meets the steel all the way around (rim radius = ogive radius at this height).
+  const loxRimY = 7.0, loxR = noseRad(loxRimY);
+  const lox = new THREE.Mesh(new THREE.SphereGeometry(loxR,40,20,0,Math.PI*2,Math.PI/2,Math.PI/2), loxMat); // bottom half → dome bulging down, apex feeds the line
+  lox.position.set(-HINGE_X,loxRimY,0); pivot.add(lox);
+
+  // LOX quick-disconnect on the WINDWARD parting line, recessed behind the heat shield.
+  // Cylindrical coupling; cap half rides up with the nose, barrel half stays — both inside the OML.
+  const qdR = R - 0.6;                                          // internal, coaxial with the LOX line
+  const qdCap = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.26,0.5,20), qdMat);
+  qdCap.position.set(-qdR - HINGE_X,0.25,0); pivot.add(qdCap);   // bottom sits at the parting plane
+  const qdBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.26,0.45,20), qdMat);
+  qdBarrel.position.set(-qdR,PART_Y-0.225,0); scene.add(qdBarrel); // top at the parting plane → halves touch
+
+  // LOX feed line from the header tank outlet down to the QD (rides with the cap) — LOX colour
+  const pipeCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-HINGE_X, 3.7, 0),            // header dome outlet (on axis)
+    new THREE.Vector3(-HINGE_X, 2.7, 0),            // emerge straight down out of the dome
+    new THREE.Vector3(-HINGE_X-2.1, 1.95, 0),       // sweep across toward the windward QD
+    new THREE.Vector3(-qdR-HINGE_X, 1.15, 0),       // straighten above the QD
+    new THREE.Vector3(-qdR-HINGE_X, 0.5, 0),        // straight down into the QD cap top (coaxial)
+  ]);
+  const pipe = new THREE.Mesh(new THREE.TubeGeometry(pipeCurve,28,0.17,14,false), qdMat);
+  pivot.add(pipe);
+
+  // LOX feed continues straight down from the barrel-side QD half, parallel to the wall (lower routing not modelled)
+  const downCurve = new THREE.LineCurve3(
+    new THREE.Vector3(-qdR, PART_Y-0.45, 0),        // bottom of the QD barrel half (coaxial)
+    new THREE.Vector3(-qdR, 2.0, 0)                 // runs parallel to the skin and stops
+  );
+  const downPipe = new THREE.Mesh(new THREE.TubeGeometry(downCurve,40,0.17,14,false), qdMat);
+  scene.add(downPipe);
+
+  // ---- hinge hardware on the leeward edge, axis on the skin (compact, may stand a little proud) ----
+  const hingeMat = new THREE.MeshStandardMaterial({color:'#878d98',metalness:.9,roughness:.3});
+  const hingePin = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.13,3.0,16), hingeMat);
+  hingePin.rotation.x=Math.PI/2; hingePin.position.set(HINGE_X,PART_Y,0); scene.add(hingePin);
+  [-1.1,1.1].forEach(z=>{                                     // barrel-side knuckles (static)
+    const k=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.8,18), hingeMat);
+    k.rotation.x=Math.PI/2; k.position.set(HINGE_X,PART_Y,z); scene.add(k);
+    const arm=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.28,0.55), hingeMat);
+    arm.position.set(R-0.28,PART_Y-0.28,z); scene.add(arm);
+  });
+  const capKnuckle=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.7,18), hingeMat); // rides with cap
+  capKnuckle.rotation.x=Math.PI/2; capKnuckle.position.set(0,0,0); pivot.add(capKnuckle);
+  // small actuator strut — 0-g opening needs little force — tucked inboard, not on the OML
+  const actuator=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,1.0,12), hingeMat);
+  actuator.position.set(-0.5,0.3,0); actuator.rotation.z=-0.7; pivot.add(actuator);
+
+  // ---- forward flaps: projecting out perpendicular to the nose (their job), upper sides ----
+  function addNoseFlap(thetaDeg){
+    const th=THREE.MathUtils.degToRad(thetaDeg), y0=PART_Y+2.6;
+    const rho=(R*R+NOSE_L*NOSE_L)/(2*R), yy=y0-PART_Y;
+    const root=Math.sqrt(rho*rho-yy*yy);
+    const rad=root+R-rho, drdy=-yy/root;                 // nose radius + cone slope here
+    // surface frame: along-body (merid), outward-normal (span direction), circumferential (thickness)
+    const merid=new THREE.Vector3(Math.sin(th)*drdy,1,Math.cos(th)*drdy).normalize();
+    const normal=new THREE.Vector3(Math.sin(th),-drdy,Math.cos(th)).normalize();
+    const tang=new THREE.Vector3().crossVectors(merid,normal).normalize();
+    const m=new THREE.Matrix4().makeBasis(merid,normal,tang); // X=chord, Y=span(outward), Z=thickness
+    // swept, tapered fin: root on the skin (Y=0), projecting outward to the tip (Y=span)
+    const s=new THREE.Shape();
+    s.moveTo(-2.0,0); s.lineTo(2.0,0); s.lineTo(0.5,3.1); s.lineTo(-1.4,2.3); s.closePath();
+    const geo=new THREE.ExtrudeGeometry(s,{depth:0.26,bevelEnabled:false}); geo.translate(0,0,-0.13);
+    const flap=new THREE.Mesh(geo, steelMat);
+    flap.quaternion.setFromRotationMatrix(m);
+    const base=new THREE.Vector3(rad*Math.sin(th), y0, rad*Math.cos(th));
+    const inset=normal.clone().multiplyScalar(-0.2);     // embed the root slightly into the skin
+    flap.position.set(base.x-HINGE_X+inset.x, base.y-PART_Y+inset.y, base.z+inset.z);
+    // black heat-shield skin on the windward broad face
+    const skinGeo=new THREE.ExtrudeGeometry(s,{depth:0.05,bevelEnabled:false}); skinGeo.translate(0,0,-0.025);
+    const tileSkin=new THREE.Mesh(skinGeo, tileMat);
+    tileSkin.position.set(0,0,-Math.sign(Math.cos(th))*0.16);
+    flap.add(tileSkin);
+    pivot.add(flap);
+  }
+  addNoseFlap(90-66); addNoseFlap(90+66);   // upper-side positions, well off the leeward centerline
+
+  // ---- 12 over-centre latches around the parting ring (747 cargo-nose style) ----
+  // Barrel-side hook grabs a cap-side striker; the leeward hinge arc is left latch-free.
+  const latchGroup = new THREE.Group(); scene.add(latchGroup);   // hooks (static, on barrel)
+  const strikerGroup = new THREE.Group(); pivot.add(strikerGroup); // strikers (ride with cap)
+  const latchMat = new THREE.MeshStandardMaterial({color:'#9aa1ac',metalness:.9,roughness:.32});
+  const strikerMat = new THREE.MeshStandardMaterial({color:'#c9a23a',metalness:.85,roughness:.4,emissive:'#2a1c00',emissiveIntensity:.25});
+  function addLatch(thetaDeg){
+    const th=THREE.MathUtils.degToRad(thetaDeg), rr=R-0.22;   // set well inside the steel skin
+    const radial=new THREE.Vector3(Math.sin(th),0,Math.cos(th));
+    const axial=new THREE.Vector3(0,1,0);
+    const tang=new THREE.Vector3(Math.cos(th),0,-Math.sin(th));
+    // barrel-side hook: one continuous L — a flat vertical post and a claw reaching inboard over the striker
+    const hook=new THREE.Group();
+    hook.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(tang,axial,radial)); // x→tang, y→up, z→radial-out
+    hook.position.set(rr*Math.sin(th),PART_Y,rr*Math.cos(th));
+    const post=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.78,0.07),latchMat); post.position.set(0,-0.12,0);
+    const claw=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.13,0.12),latchMat); claw.position.set(0,0.205,0.06); // short claw reaches outboard over the striker, overlaps post → solid corner
+    hook.add(post); hook.add(claw); latchGroup.add(hook);
+    // cap-side striker pin (axis along the ring), captured beneath the claw — sits just inboard of the cap skin
+    const striker=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.28,12),strikerMat);
+    striker.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(radial,tang,axial));
+    const rs=R-0.13;
+    striker.position.set(rs*Math.sin(th)-HINGE_X, 0.05, rs*Math.cos(th));
+    strikerGroup.add(striker);
+  }
+  const GAP_LO=60, GAP_HI=120, LATCH_SPAN=360-(GAP_HI-GAP_LO);   // leeward hinge gap stays latch-free
+  for(let k=0;k<12;k++) addLatch(GAP_HI + LATCH_SPAN*k/11);
+
+  // ---------- callout anchors ----------
+  const anchors = [
+    {pos:new THREE.Object3D(), parent:pivot,  local:[-HINGE_X,5.4,0],          cls:'cryo',  txt:'LOX header tank (structural · domed bulkhead)'},
+    {pos:new THREE.Object3D(), parent:pivot,  local:[-qdR-HINGE_X,0.9,0],      cls:'cryo',  txt:'LOX QD · windward, behind tiles'},
+    {pos:new THREE.Object3D(), parent:scene,  local:[R+0.6,PART_Y,0],          cls:'steel', txt:'Leeward hinge (cool side, on skin)'},
+    {pos:new THREE.Object3D(), parent:scene,  local:[-R*1.05,PART_Y,0],        cls:'amber', txt:'Windward parting seam'},
+    {pos:new THREE.Object3D(), parent:scene,  local:[-(R-0.2),PART_Y,0],       cls:'steel', txt:'Stiffening ring (latch plane)'},
+    {pos:new THREE.Object3D(), parent:scene,  local:[2.7,PART_Y+0.3,3.5],      cls:'steel', txt:'12× over-centre latches (747-style)'},
+    {pos:new THREE.Object3D(), parent:scene,  local:[0,25,2.2],               cls:'steel', txt:'Full-aperture payload (telescope)'},
+  ];
+  anchors.forEach(a=>{
+    a.pos.position.set(a.local[0],a.local[1],a.local[2]); a.parent.add(a.pos);
+    const el=document.createElement('div'); el.className='lbl '+a.cls;
+    el.innerHTML='<span class="tag"><span class="dot"></span>'+a.txt+'</span>';
+    document.body.appendChild(el); a.el=el;
+  });
+
+  // ---------- orbit controls (lightweight, no dependency) ----------
+  const target=new THREE.Vector3(0,PART_Y,0);   // focus on the nose/body parting plane (seam tiles)
+  let rad=78, theta=0.95, phi=1.18, dragging=false, px=0, py=0;
+  function applyCam(){
+    camera.position.set(
+      target.x+rad*Math.sin(phi)*Math.sin(theta),
+      target.y+rad*Math.cos(phi),
+      target.z+rad*Math.sin(phi)*Math.cos(theta));
+    camera.lookAt(target);
+  }
+  const el=renderer.domElement;
+  el.addEventListener('pointerdown',e=>{dragging=true;px=e.clientX;py=e.clientY;el.setPointerCapture(e.pointerId);});
+  el.addEventListener('pointerup',()=>dragging=false);
+  el.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    theta-=(e.clientX-px)*0.006; phi-=(e.clientY-py)*0.006;
+    phi=Math.max(0.12,Math.min(Math.PI-0.12,phi)); px=e.clientX;py=e.clientY;
+  });
+  el.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(5,Math.min(190,rad+e.deltaY*0.05));},{passive:false});
+  // pinch zoom
+  let pinch=0;
+  el.addEventListener('touchmove',e=>{
+    if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+      const d=Math.hypot(dx,dy); if(pinch)rad=Math.max(5,Math.min(190,rad+(pinch-d)*0.12)); pinch=d;
+    }
+  },{passive:true});
+  el.addEventListener('touchend',()=>pinch=0);
+
+  // ---------- state ----------
+  const flags={tiles:true,bolts:true,labels:false,xray:false,payload:true,spin:false};
+  let openTarget=0, openCur=0;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const slider=document.getElementById('angSlider');
+  const angVal=document.getElementById('angVal');
+  const stateLbl=document.getElementById('stateLbl');
+  const readout=document.getElementById('readout');
+  const toggleBtn=document.getElementById('toggleBtn');
+
+  let animFrom=0, animTo=0, animStart=0, animDur=0;   // ease-in-out tween (ms)
+  function setOpenDeg(d,fromSlider){
+    openTarget=THREE.MathUtils.degToRad(d);
+    if(!fromSlider)slider.value=d;
+    if(fromSlider || reduceMotion){ animDur=0; openCur=openTarget; }            // manual slider / reduced motion: track immediately
+    else { animFrom=openCur; animTo=openTarget; animStart=performance.now(); animDur=3000; }  // button: slow, smooth
+  }
+  toggleBtn.addEventListener('click',()=>{
+    const opening = openTarget < OPEN_MAX*0.5;
+    setOpenDeg(opening?112:0);
+  });
+  slider.addEventListener('input',()=>setOpenDeg(+slider.value,true));
+  document.getElementById('resetBtn').addEventListener('click',()=>{rad=78;theta=0.95;phi=1.18;});
+
+  document.querySelectorAll('.tg').forEach(tg=>{
+    tg.addEventListener('click',()=>{
+      const k=tg.dataset.k; flags[k]=!flags[k]; tg.classList.toggle('on',flags[k]);
+      if(k==='tiles'){barrelHexMesh.visible=barrelHalfMesh.visible=noseHexMesh.visible=noseHalfMesh.visible=capTiles.visible=capSeamRow.visible=flags.tiles;}
+      if(k==='bolts'){}
+      if(k==='payload'){payload.visible=deck.visible=flags.payload;}
+      if(k==='xray'){
+        [steelMat,steelCapMat,tileMat,tileCapMat].forEach(m=>{m.transparent=flags.xray;m.opacity=flags.xray?0.26:1;m.depthWrite=!flags.xray;});
+      }
+    });
+  });
+
+  // ---------- label projection ----------
+  const v=new THREE.Vector3();
+  function updateLabels(){
+    anchors.forEach(a=>{
+      if(!flags.labels){a.el.style.opacity=0;return;}
+      a.pos.getWorldPosition(v); v.project(camera);
+      if(v.z>1){a.el.style.opacity=0;return;}
+      a.el.style.opacity=0.95;
+      a.el.style.left=((v.x*0.5+0.5)*innerWidth)+'px';
+      a.el.style.top=((-v.y*0.5+0.5)*innerHeight)+'px';
+    });
+  }
+
+  // ---------- render loop ----------
+  function tick(){
+    requestAnimationFrame(tick);
+    // ease hinge — fixed-duration smootherstep tween: zero velocity at both ends, reaches target exactly (no end jerk)
+    if(animDur>0){
+      let t=(performance.now()-animStart)/animDur;
+      if(t>=1){ t=1; animDur=0; }
+      const e=t*t*t*(t*(t*6-15)+10);
+      openCur=animFrom+(animTo-animFrom)*e;
+    }
+    pivot.rotation.z = -openCur;  // negative lifts windward edge & tip up/over leeward hinge
+
+    const deg=Math.round(THREE.MathUtils.radToDeg(openCur));
+    angVal.textContent=deg+'°';
+    if(Math.abs(openTarget)<0.01 && openCur<0.01){
+      stateLbl.textContent='— closed —'; toggleBtn.textContent='Open Nose';
+      readout.textContent='windward seam: sealed';
+    } else {
+      stateLbl.textContent='— open '+Math.round(THREE.MathUtils.radToDeg(openTarget))+'° —';
+      toggleBtn.textContent= openTarget>OPEN_MAX*0.5 ? 'Close Nose':'Open Nose';
+      readout.textContent='windward seam: open';
+    }
+    // seam glows hotter when sealed (carries the reentry load), cools open
+    const sealed = 1-Math.min(openCur/OPEN_MAX,1);
+    seamMat.emissiveIntensity = 0.25+sealed*1.1;
+    plasma.intensity = 0.15+sealed*0.5;
+
+    if(flags.spin && !reduceMotion && !dragging) theta+=0.0016;
+
+    applyCam();
+    updateLabels();
+    renderer.render(scene,camera);
+  }
+
+  addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+
+  // start partially open so the concept reads immediately
+  applyCam();
+  tick();
+  setTimeout(()=>setOpenDeg(46),350);
+})();
+</script>
+</body>
+</html>
